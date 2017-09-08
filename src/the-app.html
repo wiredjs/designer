@@ -1,7 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="components/designer-tab.html">
 <link rel="import" href="components/designer-tabs.html">
+<link rel="import" href="components/tree-view.html">
+<link rel="import" href="element-view/element-view.html">
 
 <dom-module id="the-app">
   <template>
@@ -76,6 +79,10 @@
         padding: 0;
         border: none;
       }
+
+      iron-pages {
+        position: relative;
+      }
     </style>
     <div id="shell" class="vertical layout">
       <div id="toolbar" class="horizontal layout center">
@@ -85,9 +92,10 @@
 
         <div id="ldrawer" class="drawer">
           <designer-tab class="single"><button>tree</button></designer-tab>
+          <tree-view name="tree" id="treeView"></tree-view>
         </div>
 
-        <div id="mainView" class="flex">
+        <div id="mainView" class="flex vertical layout">
           <designer-tabs attr-for-selected="name" selected="{{mainPage}}">
             <designer-tab name="designer">
               <button>Designer</button>
@@ -102,9 +110,26 @@
               <button>Help</button>
             </designer-tab>
           </designer-tabs>
+          <iron-pages class="flex" selected="[[mainPage]]" attr-for-selected="name" selected-attribute="visible">
+            <div name="designer">
+              <h1>Designer</h1>
+            </div>
+            <div name="preview">
+              <h1>preview</h1>
+            </div>
+            <div name="code">
+              <h1>code</h1>
+            </div>
+            <div name="help">
+              <h1>help</h1>
+            </div>
+          </iron-pages>
         </div>
 
-        <div class="drawer"></div>
+        <div class="drawer">
+          <canvas-controls id="canvasControls"></canvas-controls>
+          <element-view id="elementView"></element-view>
+        </div>
 
       </div>
     </div>
@@ -113,6 +138,17 @@
   <script>
     class TheApp extends Polymer.Element {
       static get is() { return 'the-app'; }
+      static get properties() {
+        return {
+          activeElement: {
+            type: Object
+          },
+          mainPage: {
+            type: String,
+            value: 'designer'
+          }
+        };
+      }
     }
 
     window.customElements.define(TheApp.is, TheApp);
