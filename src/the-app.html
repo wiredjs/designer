@@ -1,0 +1,120 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="components/designer-tab.html">
+<link rel="import" href="components/designer-tabs.html">
+
+<dom-module id="the-app">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+       :host {
+        display: block;
+        box-sizing: border-box;
+        position: relative;
+        --canvas-background: white;
+        --almost-black: #141720;
+        --dark-grey: #232733;
+        --medium-grey: #2f3545;
+        --light-grey: #383f52;
+        --highlight-pink: #e91e63;
+        --highlight-blue: #2196f3;
+        --input-border-color: #596c7a;
+      }
+
+      #shell {
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #toolbar {
+        padding: 0 16px;
+        background-color: var(--almost-black);
+        color: white;
+        height: 60px;
+        font-size: 20px;
+      }
+
+      .heavy {
+        font-weight: 900;
+        letter-spacing: 2px;
+      }
+
+      .lite {
+        font-weight: 100;
+        opacity: 0.5;
+        letter-spacing: normal;
+      }
+
+      button {
+        background: transparent;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button[disabled] {
+        pointer-events: none;
+        opacity: 0.3;
+      }
+
+      .drawer {
+        min-width: 270px;
+        width: 270px;
+        height: 100%;
+        overflow: hidden;
+        background: var(--medium-grey);
+        color: white;
+        display: flex;
+        flex-direction: column;
+      }
+
+      designer-tab.single {
+        color: white;
+        background: var(--dark-grey);
+        width: 100%;
+        height: 41px;
+        margin: 0;
+        padding: 0;
+        border: none;
+      }
+    </style>
+    <div id="shell" class="vertical layout">
+      <div id="toolbar" class="horizontal layout center">
+        <span class="heavy">wywiwyg <span class="lite">// what you wire is what you get</span></span>
+      </div>
+      <div class="flex horizontal layout">
+
+        <div id="ldrawer" class="drawer">
+          <designer-tab class="single"><button>tree</button></designer-tab>
+        </div>
+
+        <div id="mainView" class="flex">
+          <designer-tabs attr-for-selected="name" selected="{{mainPage}}">
+            <designer-tab name="designer">
+              <button>Designer</button>
+            </designer-tab>
+            <designer-tab name="preview">
+              <button on-click="viewDemo">Preview</button>
+            </designer-tab>
+            <designer-tab name="code">
+              <button on-click="viewCode">Code</button>
+            </designer-tab>
+            <designer-tab name="help">
+              <button>Help</button>
+            </designer-tab>
+          </designer-tabs>
+        </div>
+
+        <div class="drawer"></div>
+
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class TheApp extends Polymer.Element {
+      static get is() { return 'the-app'; }
+    }
+
+    window.customElements.define(TheApp.is, TheApp);
+  </script>
+</dom-module>

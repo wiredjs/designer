@@ -1,0 +1,7 @@
+{
+  "name": "wywiwyg",
+  "short_name": "wywiwyg",
+  "description": "What you wire is what you get",
+  "start_url": "/",
+  "display": "standalone"
+}
