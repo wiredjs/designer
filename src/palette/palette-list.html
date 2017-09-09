@@ -1,0 +1,55 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="palette-shared-styles.html">
+<link rel="import" href="palette-base.html">
+
+<dom-module id="palette-list">
+  <template strip-whitespace>
+    <style include="palette-shared-styles"></style>
+
+    <dom-repeat items="[[elements]]">
+      <template>
+        <button>[[item]]</button>
+      </template>
+    </dom-repeat>
+
+    <iron-ajax auto url="[[src]]" handle-as="json" on-response="_elementsReady"></iron-ajax>
+  </template>
+  <script>
+    class PaletteList extends PaletteBase(Polymer.Element) {
+      static get is() { return 'palette-list' }
+      static get properties() {
+        return {
+          native: {
+            type: Boolean,
+            value: false
+          },
+          src: String
+        }
+      }
+
+      constructor() {
+        super();
+      }
+
+      _doClick(target, kind) {
+        if (this.native) {
+          this._fireEvent('new-element', kind);
+        } else {
+          let matches = kind.match(/(.*)\/(.*)/);
+          let packageName = kind;
+          if (matches && matches.length === 3) {
+            packageName = matches[1];
+            kind = matches[2];
+          }
+          let url = this.resolveUrl('../../bower_components/' + packageName + "/" + kind + ".html");
+          Polymer.importHref(url, () => {
+            this._fireEvent('new-element', kind, packageName, '');
+          });
+        }
+      }
+    }
+    window.customElements.define(PaletteList.is, PaletteList);
+  </script>
+</dom-module>

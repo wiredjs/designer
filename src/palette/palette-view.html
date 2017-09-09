@@ -12,9 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../components/designer-tabs.html">
 <link rel="import" href="../components/designer-tab.html">
-<link rel="import" href="palette-elements.html">
-<link rel="import" href="palette-native.html">
-<link rel="import" href="palette-samples.html">
+<link rel="import" href="palette-list.html">
 
 <dom-module id="palette-view">
   <template>
@@ -34,20 +32,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <designer-tabs attr-for-selected="name" selected="{{selected}}">
+      <designer-tab name="wired">
+        <button>Wired</button>
+      </designer-tab>
       <designer-tab name="native">
         <button>Native</button>
       </designer-tab>
-      <designer-tab name="elements">
-        <button>Custom</button>
-      </designer-tab>
-      <designer-tab name="samples">
-        <button>Samples</button>
-      </designer-tab>
     </designer-tabs>
     <iron-pages selected="[[selected]]" attr-for-selected="name" selected-attribute="visible">
-      <palette-native name="native" id="native"></palette-native>
-      <palette-elements name="elements"></palette-elements>
-      <palette-samples name="samples"></palette-samples>
+      <palette-list name="native" src="elements-native.json" native></palette-list>
+      <palette-list name="wired" src="elements-wired.json"></palette-list>
     </iron-pages>
   </template>
   <script>
@@ -57,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return {
           selected: {
             type: String,
-            value: 'native'
+            value: 'wired'
           }
         }
       }

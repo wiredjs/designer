@@ -1,0 +1,22 @@
+{
+  "elements": [
+    "wired-card",
+    "wired-item",
+    "wired-button",
+    "wired-checkbox",
+    "wired-combo",
+    "wired-input",
+    "wired-listbox",
+    "wired-progress",
+    "wired-radio",
+    "wired-radio-group",
+    "wired-textarea",
+    "wired-toggle",
+    "wired-icon-button",
+    "wired-menu-item",
+    "wired-menu-bar",
+    "wired-slider",
+    "wired-tooltip",
+    "wired-spinner"
+  ]
+}
