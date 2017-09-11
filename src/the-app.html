@@ -6,6 +6,10 @@
 <link rel="import" href="components/tree-view.html">
 <link rel="import" href="element-view/element-view.html">
 <link rel="import" href="palette/palette-view.html">
+<link rel="import" href="canvas/canvas-view.html">
+<link rel="import" href="canvas/canvas-controls.html">
+<link rel="import" href="action-history.html">
+<link rel="import" href="app-controls.html">
 
 <dom-module id="the-app">
   <template>
@@ -85,9 +89,11 @@
         position: relative;
       }
     </style>
+    <action-history id="actionHistory"></action-history>
     <div id="shell" class="vertical layout">
       <div id="toolbar" class="horizontal layout center">
-        <span class="heavy">wywiwyg <span class="lite">// what you wire is what you get</span></span>
+        <span class="heavy flex">wywiwyg <span class="lite">// what you wire is what you get</span></span>
+        <app-controls id="appControls"></app-controls>
       </div>
       <div class="flex horizontal layout">
 
@@ -112,9 +118,7 @@
             </designer-tab>
           </designer-tabs>
           <iron-pages class="flex" selected="[[mainPage]]" attr-for-selected="name" selected-attribute="visible">
-            <div name="designer">
-              <h1>Designer</h1>
-            </div>
+            <canvas-view name="designer" id="viewContainer" style="height:100%"></canvas-view>
             <div name="preview">
               <h1>preview</h1>
             </div>
@@ -151,6 +155,186 @@
           }
         };
       }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.setActiveElement(this.$.viewContainer);
+        this.refreshView();
+
+        this.$.canvasControls.actionHistory = this.$.actionHistory;
+        this.$.canvasControls.canvasElement = this.$.viewContainer;
+        this.$.appControls.actionHistory = this.$.actionHistory;
+        this.$.viewContainer.actionHistory = this.$.actionHistory;
+
+        this.addEventListener('new-element', event => this.createElement(event));
+        this.addEventListener('element-updated', event => this.updateElement(event));
+
+        this.addEventListener('refresh-view', event => this.refreshView(event));
+        this.addEventListener('selected-element-changed', event => {
+          this.setActiveElement(event.detail.target);
+        });
+        this.addEventListener('finish-clone', event => {
+          this._finishNewElement(event.detail.target, event.detail.target.localName, true);
+        });
+        this.addEventListener('update-action-buttons', event => {
+          this.$.appControls.update(event.detail.undos, event.detail.redos);
+        });
+
+        this.addEventListener('remove-from-canvas', event => {
+          const parent = event.detail.parent;
+          const node = event.detail.target;
+          if (parent === this.$.viewContainer) {
+            this.$.viewContainer.remove(node);
+          } else {
+            parent.removeChild(node);
+          }
+          parent.click();
+        });
+        this.addEventListener('add-to-canvas', event => {
+          const parent = event.detail.parent;
+          const node = event.detail.target;
+          if (parent === this.$.viewContainer) {
+            this.$.viewContainer.add(node);
+          } else {
+            parent.appendChild(node);
+          }
+          node.click();
+        });
+        this.addEventListener('move', event => {
+          this.$.canvasControls.move(event.detail.type, event.detail.skipHistory);
+        });
+      }
+
+      setActiveElement(el) {
+        if (el === this) {
+          el = this.$.viewContainer;
+        }
+        if (this.activeElement) {
+          this.activeElement.classList.remove('active');
+        }
+        el.classList.add('active');
+        // Tell everyone who cares about this.
+        this.$.canvasControls.selectedElement =
+          this.$.viewContainer.selectedElement = this.activeElement = el;
+        this.$.canvasControls.selectedElement = this.activeElement;
+        this.$.canvasControls.update(this.activeElement === this.$.viewContainer);
+      }
+
+      createElement(event) {
+        let tag = event.detail.type.toLowerCase();
+        let el = document.createElement(tag);
+        this.$.viewContainer.add(el);
+        // If we haven't before, save this initial state of a <tag> element,
+        // so that we can diff it to produce the actual state of the world
+        // codeView.save(tag, event.detail.package, el);
+        this.$.actionHistory.add('new', el, { parent: el.parentNode });
+        this._finishNewElement(el, tag);
+        // You need the item to render first.
+        requestAnimationFrame(function () {
+          el.click();
+        });
+      }
+
+      refreshView(event) {
+        if (event && event.detail.whileTracking) {
+          let size = this.activeElement.getBoundingClientRect();
+          this.$.elementView.displayPosition(size.top, size.left);
+          return;
+        }
+        let el = this.activeElement ? this.activeElement : this.$.viewContainer;
+        // Display its properties in the side view.
+        this.$.elementView.display(el);
+        // Highlight it in the tree.
+        this.$.treeView.recomputeTree(this.$.viewContainer, el);
+      }
+
+      updateElement(event) {
+        let detail = event.detail;
+        let oldValue = this.updateActiveElementValues(detail.type, detail.name, detail.value, detail.isAttribute);
+        if (detail.skipHistory) {
+          return;
+        }
+        this.$.actionHistory.add('update', this.activeElement,
+          {
+            type: detail.type, name: detail.name,
+            new: { value: detail.value },
+            old: { value: oldValue }
+          });
+      }
+
+      updateActiveElementValues(type, name, value, isAttribute) {
+        let previousValue;
+        if (type === 'style') {
+          // If we switch to flexbox, automatically reposition the children
+          if (name === 'display' && value === 'flex') {
+            let children = this.activeElement.children;
+            for (let i = 0; i < children.length; i++) {
+              children[i].style.position = 'relative';
+              children[i].style.top = children[i].style.left = 'auto';
+            }
+          }
+          previousValue = this.activeElement.style[name];
+          this.activeElement.style[name] = value;
+        } else {
+          previousValue = this.activeElement[name];
+          // If this is a dom-repeat, don't set the items attribute, set a fake
+          // items instead (so that it doesn't stamp).
+          if (this.activeElement.localName === 'dom-repeat' && name === 'items') {
+            this.activeElement.dataset['fakeItemsAttr'] = value;
+          } else if (value === 'true') {
+            this._setPropertyOrValue(name, true, isAttribute);
+          } else if (value === 'false') {
+            if (this.activeElement.hasAttribute(name)) {
+              this.activeElement.removeAttribute(name);
+            } else {
+              this._setPropertyOrValue(name, false, isAttribute);
+            }
+          } else {
+            this._setPropertyOrValue(name, value, isAttribute);
+          }
+        }
+        this.$.treeView.recomputeTree(this.$.viewContainer, this.activeElement);
+        return previousValue;
+      }
+
+      _setPropertyOrValue(name, value, isAttribute) {
+        if (isAttribute) {
+          this.activeElement.setAttribute(name, value);
+        } else {
+          this.activeElement[name] = value;
+        }
+      }
+
+      _finishNewElement(el, tag, isClone) {
+        el.id = this._makeUniqueId(el, tag);
+        if (isClone) {
+          // Go through the children and reset their IDs too.
+          let children = el.querySelectorAll('*');
+          for (let i = 0; i < el.length; i++) {
+            el[i].id = this._makeUniqueId(el[i], el[i].localName);
+          }
+          return;
+        }
+        // If it's a new element that isn't a clone, it was chosen from the
+        // palette, so position it somewhere slightly better.
+        el.style.boxSizing = 'border-box';
+        el.style.position = 'absolute';
+        el.style.left = el.style.top = '20px';
+        // If it's a native element, or has a slot, put some text in that slot
+        // to indicate that.
+        let slots = el.root ? el.root.querySelectorAll('slot') : [];
+        if ((this.$.paletteView.isNativeElement(tag) && tag !== 'input') ||
+          slots.length != 0) {
+          el.textContent = tag;
+        }
+      }
+      _makeUniqueId(node, id, suffix) {
+        id = id.replace('-', '_');
+        let uId = id + (suffix || '');
+        return this.$.viewContainer.has('#' + uId) ?
+          this._makeUniqueId(node, id, suffix ? ++suffix : 1) : uId;
+      }
+
     }
 
     window.customElements.define(TheApp.is, TheApp);
