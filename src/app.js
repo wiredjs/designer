@@ -90,3 +90,13 @@ function getAttributesIfCustomElement(target) {
     return [];
   }
 }
+
+function rewire(el) {
+  setTimeout(() => {
+    if (el._relayout) {
+      try { el._relayout(); } catch (ex) { console.error(ex); }
+    } else if (el.relayout) {
+      try { el.relayout(); } catch (ex) { console.error(ex); }
+    }
+  }, 1);
+}

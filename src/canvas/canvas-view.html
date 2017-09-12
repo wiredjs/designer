@@ -316,6 +316,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             let trackY = Math.round(event.detail.dy / 10) * 10;
             el.style.width = this._initialWidth + trackX + 'px';
             el.style.height = this._initialHeight + trackY + 'px';
+            rewire(el);
             break;
           case 'end':
             this._resizing = false;
@@ -326,6 +327,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               });
             el.classList.remove('resizing');
             el.classList.remove('dragging');
+            rewire(el);
 
             // Ensure that this element is still selected after we're done.
             // i.e.: Sometimes the end of a resize can end up outside of the element,

@@ -191,11 +191,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _updateSize(node, detail) {
         node.style.width = detail.width;
         node.style.height = detail.height;
+        rewire(node);
       }
 
       _reparent(node, oldParent, newParent) {
         oldParent.removeChild(node);
         newParent.appendChild(node);
+        rewire(oldParent);
+        rewire(newParent);
       }
     }
     customElements.define(ActionHistory.is, ActionHistory);
