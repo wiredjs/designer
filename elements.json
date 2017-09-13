@@ -17,6 +17,7 @@
     {
       "name": "wired-item",
       "label": "Combo/List item",
+      "disableSizing": true,
       "properties": [
         {
           "name": "text",
@@ -41,6 +42,7 @@
     {
       "name": "wired-checkbox",
       "label": "Checkbox",
+      "disableSizing": true,
       "properties": [
         {
           "name": "text",
@@ -50,7 +52,8 @@
     },
     {
       "name": "wired-combo",
-      "label": "Combo box"
+      "label": "Combo box",
+      "disableSizing": true
     },
     {
       "name": "wired-input",
@@ -83,6 +86,7 @@
     {
       "name": "wired-radio",
       "label": "Radio",
+      "disableSizing": true,
       "properties": [
         {
           "name": "text",
@@ -116,7 +120,8 @@
     },
     {
       "name": "wired-toggle",
-      "label": "Toggle switch"
+      "label": "Toggle switch",
+      "disableSizing": true
     },
     {
       "name": "wired-icon-button",
@@ -125,6 +130,7 @@
     {
       "name": "wired-menu-item",
       "label": "Menu item",
+      "disableSizing": true,
       "properties": [
         {
           "name": "text",

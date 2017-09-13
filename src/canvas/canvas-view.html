@@ -63,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       /* Show a resize cursor in the corner */
 
-      .active:after {
+      .active-resizable:after {
         position: absolute;
         bottom: -5px;
         right: -5px;
@@ -165,12 +165,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         let rekt = el.getBoundingClientRect();
         let shouldResize = this.dragShouldSize(event, rekt);
+        if (el.getAttribute("data-noresize") === "true") {
+          shouldResize = false;
+        }
         if (shouldResize) {
           this._resizing = true;
           this._initialWidth = rekt.width;
           this._initialHeight = rekt.height;
           el.classList.add('resizing');
           el.classList.add('active');
+          el.classList.add('active-resizable');
         }
 
         if (this._resizing) {
@@ -196,6 +200,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             el.style.position = 'absolute';
             el.classList.add('dragging');
             el.classList.add('active');
+            if (el.getAttribute("data-noresize") != "true") {
+              el.classList.add('active-resizable');
+            }
             break;
           case 'track':
             // Grid is 10.

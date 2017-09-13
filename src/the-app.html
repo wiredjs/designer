@@ -213,8 +213,12 @@
         }
         if (this.activeElement) {
           this.activeElement.classList.remove('active');
+          this.activeElement.classList.remove('active-resizable');
         }
         el.classList.add('active');
+        if (el.getAttribute("data-noresize") != "true") {
+          el.classList.add('active-resizable');
+        }
         // Tell everyone who cares about this.
         this.$.canvasControls.selectedElement =
           this.$.viewContainer.selectedElement = this.activeElement = el;
@@ -323,6 +327,9 @@
         }
         if (item.textContent) {
           el.textContent = item.textContent;
+        }
+        if (item.disableSizing) {
+          el.setAttribute("data-noresize", "true")
         }
       }
 

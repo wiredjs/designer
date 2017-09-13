@@ -97,6 +97,8 @@ function rewire(el) {
       try { el._relayout(); } catch (ex) { console.error(ex); }
     } else if (el.relayout) {
       try { el.relayout(); } catch (ex) { console.error(ex); }
+    } else if (el._refresh) {
+      try { el._refresh(); } catch (ex) { console.error(ex); }
     }
   }, 1);
 }
