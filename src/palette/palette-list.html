@@ -49,9 +49,17 @@
 
       _doClick(event) {
         let item = event.model.item;
+        let target = event.currentTarget;
         if (item.native) {
-          const event = new CustomEvent('new-element', { bubbles: true, composed: true, detail: item });
-          this.dispatchEvent(event);
+          setTimeout(() => {
+            if (target && target.blur) {
+              target.blur();
+            }
+            setTimeout(() => {
+              const event = new CustomEvent('new-element', { bubbles: true, composed: true, detail: item });
+              this.dispatchEvent(event);
+            })
+          });
         } else {
           let kind = item.name;
           let matches = kind.match(/(.*)\/(.*)/);
@@ -62,8 +70,15 @@
           }
           let url = this.resolveUrl('../../bower_components/' + packageName + "/" + kind + ".html");
           Polymer.importHref(url, () => {
-            const event = new CustomEvent('new-element', { bubbles: true, composed: true, detail: item });
-            this.dispatchEvent(event);
+            setTimeout(() => {
+              if (target && target.blur) {
+                target.blur();
+              }
+              setTimeout(() => {
+                const event = new CustomEvent('new-element', { bubbles: true, composed: true, detail: item });
+                this.dispatchEvent(event);
+              })
+            });
           });
         }
       }

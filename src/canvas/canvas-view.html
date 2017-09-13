@@ -65,8 +65,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .active-resizable:after {
         position: absolute;
-        bottom: -5px;
-        right: -5px;
+        bottom: -3px;
+        right: -3px;
         height: 14px;
         width: 14px;
         content: '↘';
@@ -165,7 +165,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         let rekt = el.getBoundingClientRect();
         let shouldResize = this.dragShouldSize(event, rekt);
-        if (el.getAttribute("data-noresize") === "true") {
+        if (this._dragging || el.getAttribute("data-noresize") === "true") {
           shouldResize = false;
         }
         if (shouldResize) {
@@ -197,6 +197,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         switch (event.detail.state) {
           case 'start':
             this._resizing = false;
+            this._dragging = true;
             el.style.position = 'absolute';
             el.classList.add('dragging');
             el.classList.add('active');
@@ -248,6 +249,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             break;
           case 'end':
             this._resizing = false;
+            this._dragging = false;
             let reparented = false;
             let oldParent = el.parentElement;
             let newParent;
@@ -351,7 +353,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       dragShouldSize(event, rect) {
         const right = Math.abs(rect.right - event.detail.x);
         const bottom = Math.abs(rect.bottom - event.detail.y);
-        return (right < 8 && bottom < 8);
+        return (right < 13 && bottom < 13);
       }
 
       deepTargetFind(x, y, notThis) {
@@ -386,8 +388,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // or keys after you've selected something from the tree view.
         // TODO: can this be less bad since it's p horrid?
         let isOk =
-          (event.composedPath()[0].localName === 'button' &&
-            event.composedPath()[2].localName == 'tree-view') ||
+          (event.composedPath()[0].localName === 'button' && (event.composedPath()[2].localName == 'tree-view' || event.composedPath()[2].localName == 'palettes-list')) ||
           (event.composedPath()[0].localName == 'body') ||
           event.composedPath()[0].classList.contains('active');
 
@@ -431,6 +432,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               el.style.left = oldLeft + 10 + 'px';
             }
             break;
+          case 8:
+          case 46:
+            const removeEvent = new CustomEvent('delete-request', { bubbles: true, composed: true, detail: {} });
+            window.dispatchEvent(removeEvent);
+            break;
         }
         this.actionHistory.add('move', el,
           {
@@ -438,6 +444,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             old: { left: oldLeft, top: oldTop, position: oldPosition }
           });
       }
+
     }
     customElements.define(CanvasView.is, CanvasView);
   </script>
