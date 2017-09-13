@@ -41,7 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </designer-tabs>
     <iron-pages selected="[[selected]]" attr-for-selected="name" selected-attribute="visible">
       <!-- <palette-list id="native" name="native" src="elements-native.json" native></palette-list> -->
-      <palette-list name="wired" src="elements.json"></palette-list>
+      <palette-list id="wired" name="wired" src="elements.json"></palette-list>
     </iron-pages>
   </template>
   <script>
@@ -56,8 +56,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
 
-      isNativeElement(tag) {
-        return this.$.native.elements.indexOf(tag) !== -1;
+      getElementInfo(el) {
+        let tag = el.tagName.toLowerCase();
+        return this.$.wired.getElementInfo(tag);
       }
     }
     customElements.define(PaletteView.is, PaletteView);

@@ -249,7 +249,7 @@
         }
         let el = this.activeElement ? this.activeElement : this.$.viewContainer;
         // Display its properties in the side view.
-        this.$.elementView.display(el);
+        this.$.elementView.display(el, this.$.paletteView.getElementInfo(el));
         // Highlight it in the tree.
         this.$.treeView.recomputeTree(this.$.viewContainer, el);
       }

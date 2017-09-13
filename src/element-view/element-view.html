@@ -5,6 +5,7 @@
 <link rel="import" href="element-stuff-styles.html">
 <link rel="import" href="element-stuff-flex.html">
 <link rel="import" href="element-stuff-properties.html">
+<link rel="import" href="element-properties.html">
 
 <dom-module id="element-view">
   <template>
@@ -22,7 +23,10 @@
     </style>
     <designer-tabs attr-for-selected="name" selected="{{selected}}">
       <designer-tab name="properties">
-        <button>properties</button>
+        <button>Props</button>
+      </designer-tab>
+      <designer-tab name="props">
+        <button>P</button>
       </designer-tab>
       <designer-tab name="styles">
         <button>styles</button>
@@ -33,7 +37,8 @@
     </designer-tabs>
 
     <iron-pages attr-for-selected="name" selected-attribute="visible" selected="[[selected]]">
-      <element-stuff-properties name="properties" id="propertiesContainer"></element-stuff-properties>
+      <element-properties name="properties" id="propertiesContainer"></element-properties>
+      <element-stuff-properties name="props" id="propsContainer"></element-stuff-properties>
       <element-stuff-styles name="styles" id="stylesContainer"></element-stuff-styles>
       <element-stuff-flex name="flex" id="flexContainer"></element-stuff-flex>
     </iron-pages>
@@ -53,9 +58,10 @@
       /**
        * Updates the views.
        */
-      display(el) {
+      display(el, info) {
         let computedStyle = window.getComputedStyle(el);
-        this.$.propertiesContainer.display(el);
+        this.$.propertiesContainer.display(el, info);
+        this.$.propsContainer.display(el, info);
         this.$.stylesContainer.display(computedStyle, el);
         this.$.flexContainer.display(computedStyle);
       }

@@ -91,6 +91,36 @@ function getAttributesIfCustomElement(target) {
   }
 }
 
+function getCustomProperties(target) {
+  let list = [];
+  if (target.tagName.indexOf('-') !== -1) {
+    let attrs = target.constructor.observedAttributes || [];
+    if (attrs.length) {
+      var props = target.constructor.properties;
+      if (props) {
+        var keys = Object.keys(props);
+        for (var i = 0; i < keys.length; i++) {
+          var pname = keys[i];
+          var p = props[pname];
+          var typeFn = null;
+          if (typeof p === 'function') {
+            typeFn = p;
+          } else {
+            typeFn = p.type;
+          }
+          list.push({
+            name: pname,
+            type: typeFn ? (typeFn.name || "String") : "String",
+            value: target[pname]
+          });
+        }
+      }
+    }
+  }
+  console.log(list);
+  return list;
+}
+
 function rewire(el) {
   setTimeout(() => {
     if (el._relayout) {

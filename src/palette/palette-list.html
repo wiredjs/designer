@@ -33,6 +33,11 @@
 
       constructor() {
         super();
+        this._elementMap = {};
+      }
+
+      getElementInfo(tag) {
+        return this._elementMap[tag];
       }
 
       _elementsReady(event) {
@@ -44,6 +49,10 @@
           if (na > nb) return 1;
           return 0;
         });
+        this._elementMap = {};
+        for (var i = 0; i < list.length; i++) {
+          this._elementMap[list[i].name] = list[i];
+        }
         this.elements = list;
       }
 
