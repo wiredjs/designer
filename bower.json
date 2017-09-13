@@ -8,17 +8,5 @@
     "iron-pages": "PolymerElements/iron-pages#^2.0.0",
     "iron-ajax": "^2.0.5",
     "wired-elements": "^0.2.3"
-  },
-  "devDependencies": {
-    "paper-checkbox": "PolymerElements/paper-checkbox#*",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#*",
-    "paper-input": "PolymerElements/paper-input#*",
-    "paper-listbox": "PolymerElements/paper-listbox#*",
-    "paper-radio-button": "PolymerElements/paper-radio-button#*",
-    "paper-radio-group": "PolymerElements/paper-radio-group#*",
-    "paper-slider": "PolymerElements/paper-slider#*",
-    "paper-toggle-button": "PolymerElements/paper-toggle-button#*",
-    "paper-fab": "PolymerElements/paper-fab#*",
-    "paper-button": "PolymerElements/paper-button#*"
   }
 }

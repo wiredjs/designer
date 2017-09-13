@@ -1,0 +1,188 @@
+{
+  "elements": [
+    {
+      "name": "wired-card",
+      "label": "Card (Container)",
+      "styles": [
+        {
+          "name": "width",
+          "value": "150px"
+        },
+        {
+          "name": "height",
+          "value": "150px"
+        }
+      ]
+    },
+    {
+      "name": "wired-item",
+      "label": "Combo/List item",
+      "properties": [
+        {
+          "name": "text",
+          "value": "item"
+        },
+        {
+          "name": "value",
+          "value": "item"
+        }
+      ]
+    },
+    {
+      "name": "wired-button",
+      "label": "Button",
+      "properties": [
+        {
+          "name": "text",
+          "value": "Button"
+        }
+      ]
+    },
+    {
+      "name": "wired-checkbox",
+      "label": "Checkbox",
+      "properties": [
+        {
+          "name": "text",
+          "value": "Checkbox text"
+        }
+      ]
+    },
+    {
+      "name": "wired-combo",
+      "label": "Combo box"
+    },
+    {
+      "name": "wired-input",
+      "label": "Text input",
+      "properties": [
+        {
+          "name": "placeholder",
+          "value": "Placeholder"
+        }
+      ]
+    },
+    {
+      "name": "wired-listbox",
+      "label": "List box",
+      "styles": [
+        {
+          "name": "minWidth",
+          "value": "80px"
+        },
+        {
+          "name": "minHeight",
+          "value": "100px"
+        }
+      ]
+    },
+    {
+      "name": "wired-progress",
+      "label": "Progress bar"
+    },
+    {
+      "name": "wired-radio",
+      "label": "Radio",
+      "properties": [
+        {
+          "name": "text",
+          "value": "Radio_text"
+        }
+      ]
+    },
+    {
+      "name": "wired-radio-group",
+      "label": "Radio group",
+      "styles": [
+        {
+          "name": "minWidth",
+          "value": "80px"
+        },
+        {
+          "name": "minHeight",
+          "value": "100px"
+        }
+      ]
+    },
+    {
+      "name": "wired-textarea",
+      "label": "Multiline text input",
+      "properties": [
+        {
+          "name": "placeholder",
+          "value": "Placeholder"
+        }
+      ]
+    },
+    {
+      "name": "wired-toggle",
+      "label": "Toggle switch"
+    },
+    {
+      "name": "wired-icon-button",
+      "label": "Icon button"
+    },
+    {
+      "name": "wired-menu-item",
+      "label": "Menu item",
+      "properties": [
+        {
+          "name": "text",
+          "value": "menu-item"
+        }
+      ]
+    },
+    {
+      "name": "wired-menu-bar",
+      "label": "Menu bar"
+    },
+    {
+      "name": "wired-slider",
+      "label": "Slider"
+    },
+    {
+      "name": "wired-spinner",
+      "label": "Spinner"
+    },
+    {
+      "name": "a",
+      "native": true,
+      "label": "Link",
+      "textContent": "Link text"
+    },
+    {
+      "name": "p",
+      "native": true,
+      "label": "Text",
+      "textContent": "Lorem ipsum dolor sit amet..."
+    },
+    {
+      "name": "img",
+      "native": true,
+      "noCloseTag": true,
+      "label": "Image",
+      "styles": [
+        {
+          "name": "minWidth",
+          "value": "20px"
+        },
+        {
+          "name": "minHeight",
+          "value": "20px"
+        }
+      ]
+    },
+    {
+      "name": "h1",
+      "native": true,
+      "label": "Title",
+      "textContent": "Title"
+    },
+    {
+      "name": "h2",
+      "native": true,
+      "label": "Title 2",
+      "textContent": "Smaller title"
+    }
+  ]
+}

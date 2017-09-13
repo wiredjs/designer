@@ -223,14 +223,14 @@
       }
 
       createElement(event) {
-        let tag = event.detail.type.toLowerCase();
+        let tag = event.detail.name.toLowerCase();
         let el = document.createElement(tag);
         this.$.viewContainer.add(el);
         // If we haven't before, save this initial state of a <tag> element,
         // so that we can diff it to produce the actual state of the world
         // codeView.save(tag, event.detail.package, el);
         this.$.actionHistory.add('new', el, { parent: el.parentNode });
-        this._finishNewElement(el, tag);
+        this._finishNewElement2(el, event.detail);
         // You need the item to render first.
         requestAnimationFrame(function () {
           el.click();
@@ -304,6 +304,25 @@
           this.activeElement.setAttribute(name, value);
         } else {
           this.activeElement[name] = value;
+        }
+      }
+
+      _finishNewElement2(el, item) {
+        if (item.properties && item.properties.length) {
+          for (var i = 0; i < item.properties.length; i++) {
+            el[item.properties[i].name] = item.properties[i].value
+          }
+        }
+        el.style.boxSizing = 'border-box';
+        el.style.position = 'absolute';
+        el.style.left = el.style.top = '20px';
+        if (item.styles && item.styles.length) {
+          for (var i = 0; i < item.styles.length; i++) {
+            el.style[item.styles[i].name] = item.styles[i].value
+          }
+        }
+        if (item.textContent) {
+          el.textContent = item.textContent;
         }
       }
 

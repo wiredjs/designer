@@ -2,30 +2,32 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="palette-shared-styles.html">
-<link rel="import" href="palette-base.html">
 
 <dom-module id="palette-list">
   <template strip-whitespace>
-    <style include="palette-shared-styles"></style>
+    <style include="palette-shared-styles">
+      .buttonTag {
+        font-style: italic;
+        color: var(--highlight-blue);
+        font-size: 95%;
+      }
+    </style>
 
     <dom-repeat items="[[elements]]">
       <template>
-        <button>[[item]]</button>
+        <button on-click="_doClick">[[item.label]] <span class="buttonTag">&lt;[[item.name]]&gt;</span></button>
       </template>
     </dom-repeat>
 
     <iron-ajax auto url="[[src]]" handle-as="json" on-response="_elementsReady"></iron-ajax>
   </template>
   <script>
-    class PaletteList extends PaletteBase(Polymer.Element) {
+    class PaletteList extends Polymer.Element {
       static get is() { return 'palette-list' }
       static get properties() {
         return {
-          native: {
-            type: Boolean,
-            value: false
-          },
-          src: String
+          src: String,
+          elements: { type: Array }
         }
       }
 
@@ -33,10 +35,25 @@
         super();
       }
 
-      _doClick(target, kind) {
-        if (this.native) {
-          this._fireEvent('new-element', kind);
+      _elementsReady(event) {
+        let list = event.detail.response.elements;
+        list.sort((a, b) => {
+          let na = a.label.toUpperCase();
+          let nb = b.label.toUpperCase();
+          if (na < nb) return -1;
+          if (na > nb) return 1;
+          return 0;
+        });
+        this.elements = list;
+      }
+
+      _doClick(event) {
+        let item = event.model.item;
+        if (item.native) {
+          const event = new CustomEvent('new-element', { bubbles: true, composed: true, detail: item });
+          this.dispatchEvent(event);
         } else {
+          let kind = item.name;
           let matches = kind.match(/(.*)\/(.*)/);
           let packageName = kind;
           if (matches && matches.length === 3) {
@@ -45,7 +62,8 @@
           }
           let url = this.resolveUrl('../../bower_components/' + packageName + "/" + kind + ".html");
           Polymer.importHref(url, () => {
-            this._fireEvent('new-element', kind, packageName, '');
+            const event = new CustomEvent('new-element', { bubbles: true, composed: true, detail: item });
+            this.dispatchEvent(event);
           });
         }
       }
