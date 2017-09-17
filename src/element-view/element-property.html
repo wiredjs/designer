@@ -1,0 +1,49 @@
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+
+<dom-module id="element-property">
+  <template>
+    <style include="element-stuff-shared-styles iron-flex iron-flex-alignment">
+       :host {
+        display: block;
+      }
+    </style>
+    <div class="horizontal layout center">
+      <label class="flex">{{prop.name}}</label>
+      <input id="input">
+      <paper-toggle-button id="btn"></paper-toggle-button>
+    </div>
+  </template>
+  <script>
+    class ElementProperty extends Polymer.Element {
+      static get is() { return "element-property"; }
+      static get properties() {
+        return {
+          prop: {
+            type: Object,
+            observer: '_onProp'
+          }
+        };
+      }
+
+      _onProp() {
+        switch (this.prop.type) {
+          case "Boolean":
+            this.$.input.style.display = "none";
+            this.$.btn.style.display = "";
+            break;
+          case "Number":
+            this.$.input.style.display = "";
+            this.$.btn.style.display = "none";
+            this.$.input.type = "number";
+            break;
+          default:
+            this.$.input.style.display = "";
+            this.$.btn.style.display = "none";
+            this.$.input.type = "text";
+            break;
+        }
+      }
+    }
+    customElements.define(ElementProperty.is, ElementProperty);
+  </script>
+</dom-module>
