@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="element-stuff-shared-styles.html">
+<link rel="import" href="element-property.html">
 
 <dom-module id="element-properties">
   <template>
@@ -8,7 +9,7 @@
     <div class="content-wrapper">
       <dom-repeat items="[[props]]">
         <template>
-          <button>{{item.name}}</button>
+          <element-property prop="[[item]]"></element-property>
         </template>
       </dom-repeat>
     </div>
@@ -28,6 +29,18 @@
           return;
         }
         let list = this._getCustomProperties(target, info);
+        if (info.native) {
+          let propNames = window.getProtoProperties(target);
+          if (propNames && propNames.length) {
+            for (var i = 0; i < propNames.length; i++) {
+              list.push({
+                name: propNames[i],
+                type: String,
+                value: target[propNames[i]]
+              });
+            }
+          }
+        }
         list.sort((a, b) => {
           let na = a.name.toUpperCase();
           let nb = b.name.toUpperCase();
@@ -71,7 +84,6 @@
             value: target.textContent
           });
         }
-        console.log(list);
         return list;
       }
     }

@@ -51,7 +51,7 @@ function getProtoProperties(target) {
     'validity', 'useMap', 'innerText', 'outerText', 'style', 'accessKey',
     'draggable', 'lang', 'spellcheck', 'tabIndex', 'translate', 'align', 'dir',
     'isMap', 'useMap', 'hspace', 'vspace', 'referrerPolicy', 'crossOrigin',
-    'lowsrc', 'longDesc',
+    'lowsrc', 'longDesc', "contentEditable", "hidden", "title",
     // Specific elements stuff
     'receivedFocusFromKeyboard', 'pointerDown', 'valueAsNumber',
     'selectionDirection', 'selectionStart', 'selectionEnd'
@@ -117,7 +117,6 @@ function getCustomProperties(target) {
       }
     }
   }
-  console.log(list);
   return list;
 }
 

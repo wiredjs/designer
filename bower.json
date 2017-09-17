@@ -7,6 +7,7 @@
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "iron-pages": "PolymerElements/iron-pages#^2.0.0",
     "iron-ajax": "^2.0.5",
-    "wired-elements": "^0.2.3"
+    "wired-elements": "^0.2.3",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0"
   }
 }
