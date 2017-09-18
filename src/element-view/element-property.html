@@ -9,8 +9,8 @@
     </style>
     <div class="horizontal layout center">
       <label class="flex">{{prop.name}}</label>
-      <input id="input">
-      <paper-toggle-button id="btn"></paper-toggle-button>
+      <input id="input" on-change="_onChange">
+      <paper-toggle-button id="btn" on-change="_onChange"></paper-toggle-button>
     </div>
   </template>
   <script>
@@ -30,18 +30,31 @@
           case "Boolean":
             this.$.input.style.display = "none";
             this.$.btn.style.display = "";
+            this.$.btn.checked = this.prop.value;
             break;
           case "Number":
             this.$.input.style.display = "";
             this.$.btn.style.display = "none";
             this.$.input.type = "number";
+            this.$.input.value = this.prop.value;
             break;
           default:
             this.$.input.style.display = "";
             this.$.btn.style.display = "none";
             this.$.input.type = "text";
+            this.$.input.value = this.prop.value;
             break;
         }
+      }
+
+      _onChange(event) {
+        event.stopPropagation();
+        var detail = {
+          name: this.prop.name,
+          value: (this.prop.type === "Boolean") ? this.$.btn.checked : this.$.input.value
+        }
+        const e = new CustomEvent('change', { bubbles: true, composed: true, detail: detail });
+        this.dispatchEvent(e);
       }
     }
     customElements.define(ElementProperty.is, ElementProperty);

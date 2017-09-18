@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="element-stuff-shared-styles.html">
 <link rel="import" href="element-property.html">
+<link rel="import" href="element-stuff-base.html">
 
 <dom-module id="element-properties">
   <template>
@@ -9,7 +10,7 @@
     <div class="content-wrapper">
       <dom-repeat items="[[props]]">
         <template>
-          <element-property prop="[[item]]"></element-property>
+          <element-property on-change="_onChange" prop="[[item]]"></element-property>
         </template>
       </dom-repeat>
     </div>
@@ -85,6 +86,16 @@
           });
         }
         return list;
+      }
+
+      _onChange(event) {
+        Polymer.Base.fire('element-updated',
+          {
+            type: 'property',
+            name: event.detail.name,
+            value: event.detail.value,
+            isAttribute: false
+          }, { node: this });
       }
     }
     window.customElements.define(ElementProperties.is, ElementProperties);
