@@ -2,7 +2,6 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="element-stuff-shared-styles.html">
 <link rel="import" href="element-property.html">
-<link rel="import" href="element-stuff-base.html">
 
 <dom-module id="element-properties">
   <template>
@@ -30,7 +29,7 @@
           return;
         }
         let list = this._getCustomProperties(target, info);
-        if (info.native) {
+        if (info && info.native) {
           let propNames = window.getProtoProperties(target);
           if (propNames && propNames.length) {
             for (var i = 0; i < propNames.length; i++) {
@@ -78,7 +77,7 @@
             }
           }
         }
-        if (info.textContent) {
+        if (info && info.textContent) {
           list.push({
             name: "textContent",
             type: "String",
