@@ -6,9 +6,19 @@
        :host {
         display: block;
       }
+
+      .container {
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      #moreIcon {
+        cursor: pointer;
+      }
     </style>
-    <div class="horizontal layout center">
+    <div class="container horizontal layout center">
       <label class="flex">{{prop.name}}</label>
+      <iron-icon on-click="_onMore" id="moreIcon" icon="designer:unfold-more" style="display: none;"></iron-icon>
       <input id="input" on-change="_onChange">
       <paper-toggle-button id="btn" on-change="_onChange"></paper-toggle-button>
     </div>
@@ -26,6 +36,11 @@
       }
 
       _onProp() {
+        if (this.prop.name === "icon") {
+          this.$.moreIcon.style.display = "";
+        } else {
+          this.$.moreIcon.style.display = "none";
+        }
         switch (this.prop.type) {
           case "Boolean":
             this.$.input.style.display = "none";
@@ -48,13 +63,25 @@
       }
 
       _onChange(event) {
-        event.stopPropagation();
+        if (event) {
+          event.stopPropagation();
+        }
         var detail = {
           name: this.prop.name,
           value: (this.prop.type === "Boolean") ? this.$.btn.checked : this.$.input.value
         }
         const e = new CustomEvent('change', { bubbles: true, composed: true, detail: detail });
         this.dispatchEvent(e);
+      }
+
+      _onMore() {
+        const e = new CustomEvent('icon-picker', { bubbles: true, composed: true, detail: {} });
+        this.dispatchEvent(e);
+      }
+
+      set value(v) {
+        this.$.input.value = v;
+        this._onChange();
       }
     }
     customElements.define(ElementProperty.is, ElementProperty);

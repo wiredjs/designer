@@ -1,0 +1,116 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<dom-module id="icon-picker">
+  <template>
+    <style include="element-stuff-shared-styles iron-flex iron-flex-alignment">
+       :host {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+        background: var(--canvas-background);
+        transform: translateY(-100px);
+        transition: transform 0.3s ease;
+        color: var(--almost-black);
+      }
+
+      .container {
+        display: inline-block;
+        width: 10em;
+        padding: 1em 0.5em;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 10px;
+      }
+
+      .container>div {
+        margin-top: 0.5em;
+        color: black;
+        font-size: 10px;
+      }
+
+      .container:hover {
+        background: rgba(33, 150, 243, 0.15);
+      }
+
+      h1 {
+        font-weight: 300;
+        margin: 0;
+        padding: 15px 10px 20px;
+        font-size: 30px;
+      }
+
+      #btnClose {
+        position: fixed;
+        top: 15px;
+        right: 30px;
+        background: var(--highlight-pink);
+        color: white;
+        padding: 12px;
+        border-radius: 100%;
+        cursor: pointer;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.12), 0 3px 3px rgba(0, 0, 0, 0.24), 0 0 6px rgba(0, 0, 0, 0.12), 0 6px 6px rgba(0, 0, 0, 0.24);
+      }
+    </style>
+    <h1 class="flex">Select an icon</h1>
+    <iron-icon id="btnClose" on-click="hide" icon="designer:clear"></iron-icon>
+    <div>
+      <template is="dom-repeat" items="[[icons]]">
+        <span class="container" on-click="_onSelected">
+          <iron-icon icon="{{item}}"></iron-icon>
+          <div>{{item}}</div>
+        </span>
+      </template>
+    </div>
+  </template>
+  <script>
+    class IconPicker extends Polymer.Element {
+      static get is() { return "icon-picker" }
+      static get properties() {
+        return {
+          icons: Array
+        }
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        const list = new Polymer.IronMeta({ type: 'iconset' }).list;
+        var match;
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].name === "icons") {
+            match = list[i];
+            break;
+          }
+        }
+        this.icons = match.getIconNames();
+      }
+
+      _onSelected(event) {
+        var icon = event.model.item;
+        const e = new CustomEvent('select', { bubbles: true, composed: true, detail: { icon: icon } });
+        this.dispatchEvent(e);
+        this.hide();
+      }
+
+      show() {
+        this.style.display = "block";
+        setTimeout(() => {
+          this.style.transform = "none";
+        }, 10);
+      }
+
+      hide() {
+        this.style.transform = "translateY(100%)";
+        setTimeout(() => {
+          this.style.display = "none";
+        }, 300);
+      }
+    }
+    customElements.define(IconPicker.is, IconPicker);
+  </script>
+</dom-module>

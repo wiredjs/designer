@@ -128,10 +128,26 @@
       tree-view {
         overflow: auto;
       }
+
+      .logo {
+        display: block;
+        height: 44px;
+        width: auto;
+        border-radius: 100%;
+        margin-right: 10px;
+        margin-left: -5px;
+      }
+
+      a {
+        outline: none;
+        text-decoration: none;
+        cursor: pointer;
+      }
     </style>
     <action-history id="actionHistory"></action-history>
     <div id="shell" class="vertical layout">
       <div id="toolbar" class="horizontal layout center">
+        <a href="https://github.com/wiredjs/designer" target="_blank"><img class="logo" src="/images/logo100.png"></a>
         <span class="heavy flex">wired designer<span class="lite"> // beta</span></span>
         <app-controls id="appControls"></app-controls>
       </div>

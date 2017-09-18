@@ -5,14 +5,13 @@
 
 <dom-module id="palette-list">
   <template strip-whitespace>
-    <style include="palette-shared-styles">
+    <style include="palette-shared-styles iron-flex iron-flex-alignment">
       .buttonTag {
         font-style: italic;
         color: var(--highlight-blue);
         font-size: 95%;
       }
     </style>
-
     <dom-repeat items="[[elements]]">
       <template>
         <button on-click="_doClick">[[item.label]] <span class="buttonTag">&lt;[[item.name]]&gt;</span></button>

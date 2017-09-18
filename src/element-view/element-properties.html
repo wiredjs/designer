@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="element-stuff-shared-styles.html">
 <link rel="import" href="element-property.html">
+<link rel="import" href="../components/icon-picker.html">
 
 <dom-module id="element-properties">
   <template>
@@ -9,10 +10,11 @@
     <div class="content-wrapper">
       <dom-repeat items="[[props]]">
         <template>
-          <element-property on-change="_onChange" prop="[[item]]"></element-property>
+          <element-property on-icon-picker="_onIconPicker" on-change="_onChange" prop="[[item]]"></element-property>
         </template>
       </dom-repeat>
     </div>
+    <icon-picker id="iconPicker" on-select="_onIconSelect"></icon-picker>
   </template>
   <script>
     class ElementProperties extends Polymer.Element {
@@ -36,7 +38,7 @@
               list.push({
                 name: propNames[i],
                 type: String,
-                value: target[propNames[i]]
+                value: target[propNames[i]] || ""
               });
             }
           }
@@ -68,11 +70,15 @@
                 } else {
                   typeFn = p.type;
                 }
-                list.push({
+                let listItem = {
                   name: pname,
                   type: typeFn ? (typeFn.name || "String") : "String",
                   value: target[pname]
-                });
+                };
+                if ((listItem.type !== "Boolean") && (!listItem.value)) {
+                  listItem.value = "";
+                }
+                list.push(listItem);
               }
             }
           }
@@ -95,6 +101,19 @@
             value: event.detail.value,
             isAttribute: false
           }, { node: this });
+      }
+
+      _onIconPicker(event) {
+        this._pickerTarget = event.target;
+        this.$.iconPicker.show();
+      }
+
+      _onIconSelect(event) {
+        let icon = event.detail.icon;
+        if (this._pickerTarget) {
+          this._pickerTarget.value = icon;
+          this._pickerTarget = null;
+        }
       }
     }
     window.customElements.define(ElementProperties.is, ElementProperties);

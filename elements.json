@@ -128,21 +128,6 @@
       "label": "Icon button"
     },
     {
-      "name": "wired-menu-item",
-      "label": "Menu item",
-      "disableSizing": true,
-      "properties": [
-        {
-          "name": "text",
-          "value": "menu-item"
-        }
-      ]
-    },
-    {
-      "name": "wired-menu-bar",
-      "label": "Menu bar"
-    },
-    {
       "name": "wired-slider",
       "label": "Slider"
     },
