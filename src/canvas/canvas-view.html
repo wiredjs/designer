@@ -20,10 +20,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 100%;
         position: relative;
         background-color: var(--canvas-background);
-        /* 10px grid, using http://www.patternify.com/ */
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIElEQVQoU2NkYGBIY2BgmMVAADASUgCTH1WIN6SIDh4AnhABC01te2MAAAAASUVORK5CYII=);
-        background-position: 0px 0px;
         transform: translateZ(0);
+        font-family: 'Gloria Hallelujah', sans-serif;
       }
 
       #canvas {
@@ -106,8 +104,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     class CanvasView extends Polymer.Element {
       static get is() { return 'canvas-view'; }
+      static get properties() {
+        return {
+          grid: {
+            type: Boolean,
+            value: true,
+            observer: '_onGridChange'
+          }
+        }
+      }
+
       connectedCallback() {
         super.connectedCallback();
+
+        this._onGridChange();
 
         Polymer.Gestures.addListener(this.$.canvas, 'track', this.trackElement.bind(this));
         this.addEventListener('click', event => {
@@ -125,6 +135,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
 
         window.addEventListener('keydown', this.onKeyDown.bind(this), true);
+      }
+
+      _onGridChange() {
+        if (this.grid) {
+          this.classList.add("grid");
+        } else {
+          this.classList.remove("grid");
+        }
       }
 
       add(el) {

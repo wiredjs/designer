@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="components/designer-tab.html">
 <link rel="import" href="components/designer-tabs.html">
 <link rel="import" href="components/tree-view.html">
@@ -75,6 +76,39 @@
         flex-direction: column;
       }
 
+      .grid {
+        background-color: var(--canvas-background);
+        /* 10px grid, using http://www.patternify.com/ */
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIElEQVQoU2NkYGBIY2BgmMVAADASUgCTH1WIN6SIDh4AnhABC01te2MAAAAASUVORK5CYII=);
+        background-position: 0px 0px;
+      }
+
+      .gridPanel {
+        background: var(--dark-grey);
+        white-space: nowrap;
+        padding: 0;
+        color: white;
+      }
+
+      .gridPanel label {
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: 500;
+        text-decoration: none;
+        text-transform: uppercase;
+        line-height: 1.5;
+        margin-right: 5px;
+      }
+
+      paper-toggle-button {
+        --paper-toggle-button-checked-bar-color: #4caf50;
+        --paper-toggle-button-checked-button-color: #4caf50;
+        --paper-toggle-button-checked-ink-color: #4caf50;
+        --paper-toggle-button-unchecked-bar-color: #c73e65;
+        --paper-toggle-button-unchecked-button-color: #c73e65;
+        --paper-toggle-button-unchecked-ink-color: #c73e65;
+      }
+
       designer-tab.single {
         color: white;
         background: var(--dark-grey);
@@ -90,6 +124,10 @@
         overflow: auto;
         position: relative;
       }
+
+      tree-view {
+        overflow: auto;
+      }
     </style>
     <action-history id="actionHistory"></action-history>
     <div id="shell" class="vertical layout">
@@ -100,41 +138,30 @@
       <div class="flex horizontal layout">
 
         <div id="ldrawer" class="drawer">
-          <designer-tab class="single"><button>tree</button></designer-tab>
+          <designer-tab class="single"><button>Components</button></designer-tab>
+          <canvas-controls id="canvasControls"></canvas-controls>
           <tree-view name="tree" id="treeView"></tree-view>
         </div>
 
         <div id="mainView" class="flex vertical layout">
-          <designer-tabs attr-for-selected="name" selected="{{mainPage}}">
-            <designer-tab name="designer">
-              <button>Designer</button>
-            </designer-tab>
-            <designer-tab name="preview">
-              <button on-click="viewDemo">Preview</button>
-            </designer-tab>
-            <designer-tab name="code">
-              <button on-click="viewCode">Code</button>
-            </designer-tab>
-            <designer-tab name="help">
-              <button>Help</button>
-            </designer-tab>
-          </designer-tabs>
+          <div class="horizontal layout" style="box-sizing: border-box;">
+            <designer-tabs attr-for-selected="name" selected="{{mainPage}}" class="flex" style="width: auto;">
+              <designer-tab name="designer">
+                <button>Designer</button>
+              </designer-tab>
+            </designer-tabs>
+            <div class="gridPanel horizontal layout center">
+              <label>Show grid</label>
+              <paper-toggle-button id="gridToggle" on-change="_onGridToggle"></paper-toggle-button>
+            </div>
+          </div>
           <iron-pages class="flex" selected="[[mainPage]]" attr-for-selected="name" selected-attribute="visible">
             <canvas-view name="designer" id="viewContainer" style="height:100%"></canvas-view>
-            <div name="preview">
-              <h1>preview</h1>
-            </div>
-            <div name="code">
-              <h1>code</h1>
-            </div>
-            <div name="help">
-              <h1>help</h1>
-            </div>
           </iron-pages>
         </div>
 
         <div class="drawer">
-          <canvas-controls id="canvasControls"></canvas-controls>
+          <!-- <canvas-controls id="canvasControls"></canvas-controls> -->
           <element-view id="elementView"></element-view>
           <palette-view id="paletteView"></palette-view>
         </div>
@@ -161,6 +188,8 @@
       connectedCallback() {
         super.connectedCallback();
         this.setActiveElement(this.$.viewContainer);
+        this._loadGridState()
+
         this.refreshView();
 
         this.$.canvasControls.actionHistory = this.$.actionHistory;
@@ -343,6 +372,24 @@
         let uId = id + (suffix || '');
         return this.$.viewContainer.has('#' + uId) ?
           this._makeUniqueId(node, id, suffix ? ++suffix : 1) : uId;
+      }
+
+      _loadGridState() {
+        var showGrid = true;
+        if (localStorage) {
+          if (localStorage.getItem("hideGrid") === "true") {
+            showGrid = false;
+          }
+        }
+        this.$.gridToggle.checked = showGrid;
+        this.$.viewContainer.grid = showGrid;
+      }
+
+      _onGridToggle() {
+        this.$.viewContainer.grid = this.$.gridToggle.checked;
+        if (localStorage) {
+          localStorage.setItem('hideGrid', this.$.gridToggle.checked ? "false" : "true");
+        }
       }
 
     }

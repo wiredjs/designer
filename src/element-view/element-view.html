@@ -3,7 +3,6 @@
 <link rel="import" href="../components/designer-tabs.html">
 <link rel="import" href="../components/designer-tab.html">
 <link rel="import" href="element-stuff-styles.html">
-<link rel="import" href="element-stuff-flex.html">
 <link rel="import" href="element-properties.html">
 
 <dom-module id="element-view">
@@ -15,7 +14,7 @@
 
       iron-pages {
         overflow: hidden;
-        height: 250px;
+        height: 300px;
         background: var(--medium-grey);
         color: white;
       }
@@ -27,15 +26,11 @@
       <designer-tab name="styles">
         <button>styles</button>
       </designer-tab>
-      <designer-tab name="flex">
-        <button>flex</button>
-      </designer-tab>
     </designer-tabs>
 
     <iron-pages attr-for-selected="name" selected-attribute="visible" selected="[[selected]]">
       <element-properties name="properties" id="propertiesContainer"></element-properties>
       <element-stuff-styles name="styles" id="stylesContainer"></element-stuff-styles>
-      <element-stuff-flex name="flex" id="flexContainer"></element-stuff-flex>
     </iron-pages>
   </template>
   <script>
@@ -57,7 +52,6 @@
         let computedStyle = window.getComputedStyle(el);
         this.$.propertiesContainer.display(el, info);
         this.$.stylesContainer.display(computedStyle, el);
-        this.$.flexContainer.display(computedStyle);
       }
 
       displayPosition(top, left) {
