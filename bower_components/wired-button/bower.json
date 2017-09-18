@@ -1,0 +1,34 @@
+{
+  "name": "wired-button",
+  "description": "Hand drawn Button component",
+  "main": "wired-button.html",
+  "license": "MIT",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "authors": [
+    "Preet Shihn (twtr: @preetster)"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "wired",
+    "button",
+    "hand-drawn",
+    "handdrawn",
+    "wireframe"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "wired-lib": "^0.1.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}

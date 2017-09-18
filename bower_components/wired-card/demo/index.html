@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-card demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../wired-input/wired-input.html">
+  <link rel="import" href="../../wired-radio-group/wired-radio-group.html">
+  <link rel="import" href="../../wired-radio/wired-radio.html">
+  <link rel="import" href="../wired-card.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      wired-card {
+        max-width: 500px;
+        padding: 10px;
+        margin: 5px 0;
+      }
+
+      .form {
+        font-family: 'Shadows Into Light', sans-serif;
+        font-weight: 400;
+      }
+
+      wired-input {
+        width: 400px;
+        margin: 5px 0;
+      }
+
+      wired-radio {
+        display: inline-block;
+        margin: 5px;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-card demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-card class="form">
+          <h2>Form Title</h2>
+          <div>
+            <wired-input placeholder="full name"></wired-input>
+          </div>
+          <div>
+            <wired-input placeholder="location"></wired-input>
+          </div>
+          <wired-radio-group>
+            <wired-radio name="male" text="male"></wired-radio>
+            <wired-radio name="female" text="female"></wired-radio>
+          </wired-radio-group>
+        </wired-card>
+      </template>
+    </demo-snippet>
+
+    <h3>Card elevation</h3>
+    <demo-snippet>
+      <template>
+        <wired-card>
+          <h4>Elevation: 1 (default)</h4>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+        </wired-card>
+        <br/>
+        <wired-card elevation="2">
+          <h4>Elevation: 2</h4>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+        </wired-card>
+        <br/>
+        <wired-card elevation="5">
+          <h4>Elevation: 5 (max)</h4>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+        </wired-card>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

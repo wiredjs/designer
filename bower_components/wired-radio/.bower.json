@@ -1,0 +1,47 @@
+{
+  "name": "wired-radio",
+  "description": "Radio button with hand-drawn look",
+  "main": "wired-radio.html",
+  "license": "MIT",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "authors": [
+    "Preet Shihn (twtr: @preetster)"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "wired",
+    "radio",
+    "radio button",
+    "radio-button",
+    "hand-drawn",
+    "handdrawn",
+    "wireframe"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "wired-lib": "^0.1.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  },
+  "homepage": "https://github.com/wiredjs/wired-radio",
+  "version": "0.2.0",
+  "_release": "0.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.0",
+    "commit": "42b74934e027d0755c5b09b19f3eb3dfb6929f41"
+  },
+  "_source": "https://github.com/wiredjs/wired-radio.git",
+  "_target": "^0.2.0",
+  "_originalSource": "wiredjs/wired-radio"
+}

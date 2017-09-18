@@ -1,0 +1,99 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+
+<dom-module id="wired-card">
+  <template>
+    <style>
+       :host {
+        display: inline-block;
+        position: relative;
+        padding: 5px;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke: currentColor;
+        stroke-width: 0.7;
+        fill: transparent;
+      }
+    </style>
+    <div>
+      <slot id="slot"></slot>
+    </div>
+    <div class="overlay">
+      <svg id="svg"></svg>
+    </div>
+  </template>
+
+  <script>
+    class WiredCard extends Polymer.Element {
+      static get is() { return 'wired-card'; }
+
+      static get properties() {
+        return {
+          elevation: {
+            type: Number,
+            value: 1,
+            observer: 'relayout'
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._connected = true;
+        this.style.opacity = 0;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          setTimeout(() => {
+            this.relayout();
+            this.style.opacity = 1;
+          }, 100);
+        });
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._connected = false;
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      relayout() {
+        if (!this._connected) {
+          return;
+        }
+        this._clearNode(this.$.svg);
+        var s = this.getBoundingClientRect();
+        var elev = Math.min(Math.max(1, this.elevation), 5);
+        var w = s.width + ((elev - 1) * 2);
+        var h = s.height + ((elev - 1) * 2);
+        this.$.svg.setAttribute("width", w);
+        this.$.svg.setAttribute("height", h);
+        _WIRES_.rectangle(this.$.svg, 0, 0, s.width, s.height);
+        for (var i = 1; i < elev; i++) {
+          (_WIRES_.line(this.$.svg, (i * 2), s.height + (i * 2), s.width + (i * 2), s.height + (i * 2))).style.opacity = (85 - (i * 10)) / 100;
+          (_WIRES_.line(this.$.svg, s.width + (i * 2), s.height + (i * 2), s.width + (i * 2), i * 2)).style.opacity = (85 - (i * 10)) / 100;
+          (_WIRES_.line(this.$.svg, (i * 2), s.height + (i * 2), s.width + (i * 2), s.height + (i * 2))).style.opacity = (85 - (i * 10)) / 100;
+          (_WIRES_.line(this.$.svg, s.width + (i * 2), s.height + (i * 2), s.width + (i * 2), i * 2)).style.opacity = (85 - (i * 10)) / 100;
+        }
+      }
+    }
+
+    window.customElements.define(WiredCard.is, WiredCard);
+  </script>
+</dom-module>

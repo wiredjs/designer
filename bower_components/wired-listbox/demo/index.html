@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-listbox demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../wired-item/wired-item.html">
+  <link rel="import" href="../wired-listbox.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-listbox demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-listbox>
+          <wired-item value="one" text="No. one"></wired-item>
+          <wired-item value="two" text="No. two"></wired-item>
+          <wired-item value="three" text="No. three"></wired-item>
+          <wired-item value="four" text="No. four"></wired-item>
+        </wired-listbox>
+      </template>
+    </demo-snippet>
+    <h3>Customizing wired-listbox</h3>
+    <demo-snippet>
+      <template>
+        <wired-listbox horizontal class="custonListBox" selected="two">
+          <wired-item value="one" text="No. one"></wired-item>
+          <wired-item value="two" text="No. two"></wired-item>
+          <wired-item value="three" text="No. three"></wired-item>
+          <wired-item value="four" text="No. four"></wired-item>
+        </wired-listbox>
+        <style is="custom-style">
+          .custonListBox {
+            --wired-combo-item-selected-bg: #fff59d;
+            --wired-combo-item-hover-bg: #9df59d;
+          }
+        </style>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

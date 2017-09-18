@@ -1,0 +1,147 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+
+<dom-module id="wired-radio">
+  <template>
+    <style>
+       :host {
+        display: block;
+        font-family: inherit;
+      }
+
+       :host(.disabled) {
+        opacity: 0.45 !important;
+        cursor: default;
+        pointer-events: none;
+      }
+
+      #container {
+        display: inline-block;
+        white-space: nowrap;
+      }
+
+      .inline {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      #checkPanel {
+        cursor: pointer;
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke: var(--wired-radio-icon-color, currentColor);
+        stroke-width: 0.7;
+        fill: transparent;
+      }
+
+      .filledPath {
+        fill: var(--wired-radio-icon-color, currentColor);
+      }
+    </style>
+    <div id="container" on-click="_toggleCheck">
+      <div id="checkPanel" class="inline">
+        <svg id="svg" width="0" height="0"></svg>
+      </div>
+      <div class="inline">[[text]]</div>
+    </div>
+  </template>
+
+  <script>
+    class WiredRadio extends Polymer.Element {
+      static get is() { return 'wired-radio' };
+      static get properties() {
+        return {
+          checked: {
+            type: Boolean,
+            value: false,
+            notify: true,
+            observer: '_onCheckedChange'
+          },
+          name: String,
+          text: String,
+          iconSize: {
+            type: Number,
+            observer: '_relayout'
+          },
+          disabled: {
+            type: Boolean,
+            value: false,
+            observer: '_onDisableChange'
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._connected = true;
+        this.style.opacity = 0;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          setTimeout(() => {
+            this._relayout();
+            this.style.opacity = 1;
+          }, 100);
+        });
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._connected = false;
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      _relayout() {
+        if (!this._connected) {
+          return;
+        }
+        this._clearNode(this.$.svg);
+        var s = { width: this.iconSize || 24, height: this.iconSize || 24 };
+        this.$.svg.setAttribute("width", s.width);
+        this.$.svg.setAttribute("height", s.height);
+        _WIRES_.ellipse(this.$.svg, s.width / 2, s.height / 2, s.width, s.height);
+
+        const iw = Math.max(s.width * 0.6, 5);
+        const ih = Math.max(s.height * 0.6, 5);
+        const n = _WIRES_.ellipse(this.$.svg, s.width / 2, s.height / 2, iw, ih);
+        n.classList.add("filledPath");
+        this._dot = n;
+        this._updateCheckVisibility();
+      }
+
+      _onCheckedChange() {
+        if (this._dot) {
+          this._updateCheckVisibility();
+        } else {
+          this._relayout();
+        }
+      }
+
+      _updateCheckVisibility() {
+        this._dot.style.display = this.checked ? "" : "none";
+      }
+
+      _toggleCheck() {
+        this.set("checked", !(this.checked || false));
+        const event = new CustomEvent('change', { bubbles: true, composed: true, checked: this.checked, detail: { checked: this.checked } });
+        this.dispatchEvent(event);
+      }
+
+      _onDisableChange() {
+        if (this.disabled) {
+          this.classList.add("disabled");
+        } else {
+          this.classList.remove("disabled");
+        }
+      }
+    }
+    window.customElements.define(WiredRadio.is, WiredRadio);
+  </script>
+</dom-module>

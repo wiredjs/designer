@@ -1,0 +1,78 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+
+<dom-module id="wired-radio-group">
+  <template>
+    <style>
+       :host {
+        display: inline-block;
+      }
+
+       :host ::slotted(*) {
+        padding: var(--wired-radio-group-item-padding, 5px);
+      }
+    </style>
+    <slot id="slot"></slot>
+  </template>
+
+  <script>
+    class WiredRadioGroup extends Polymer.Element {
+      static get is() { return "wired-radio-group"; };
+      static get properties() {
+        return {
+          selected: {
+            type: String,
+            observer: 'refresh',
+            notify: true
+          }
+        };
+      }
+
+      constructor() {
+        super();
+        this._checkListener = this._handleChecked.bind(this);
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener("change", this._checkListener);
+        this.refresh();
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener("checked", this._checkListener);
+      }
+
+      refresh() {
+        const nodes = this.$.slot.assignedNodes();
+        if (nodes) {
+          for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i].tagName === "WIRED-RADIO") {
+              const name = nodes[i].name || "";
+              if (this.selected && (name === this.selected)) {
+                nodes[i].checked = true;
+              } else {
+                nodes[i].checked = false;
+              }
+            }
+          }
+        }
+      }
+
+      _handleChecked(event) {
+        const checked = event.detail.checked;
+        const name = event.target.name;
+        if (name && checked) {
+          this.set("selected", name);
+          const event = new CustomEvent('selected', { bubbles: true, composed: true, checked: this.checked, detail: { selected: name } });
+          this.dispatchEvent(event);
+        } else {
+          this.set("selected", "");
+          const event = new CustomEvent('selected', { bubbles: true, composed: true, checked: this.checked, detail: { selected: "" } });
+          this.dispatchEvent(event);
+        }
+      }
+    }
+    window.customElements.define(WiredRadioGroup.is, WiredRadioGroup);
+  </script>
+</dom-module>

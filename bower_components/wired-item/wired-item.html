@@ -1,0 +1,48 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="wired-item">
+  <template>
+    <style>
+       :host {
+        display: block;
+        padding: 8px;
+        font-family: inherit;
+      }
+    </style>
+    <span>[[text]]</span>
+  </template>
+
+  <script>
+    class WiredItem extends Polymer.Element {
+      static get is() { return "wired-item"; }
+      static get properties() {
+        return {
+          text: String,
+          value: String
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._itemClickHandler = (event) => {
+          this._onClick(event)
+        };
+        this.addEventListener("click", this._itemClickHandler);
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        if (this._itemClickHandler) {
+          this.removeEventListener("click", this._itemClickHandler);
+          this._itemClickHandler = null;
+        }
+      }
+
+      _onClick() {
+        const event = new CustomEvent('item-click', { bubbles: true, composed: true, detail: { text: this.text, value: this.value } });
+        this.dispatchEvent(event);
+      }
+    }
+    window.customElements.define(WiredItem.is, WiredItem);
+  </script>
+</dom-module>

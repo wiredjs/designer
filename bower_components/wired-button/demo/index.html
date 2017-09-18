@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-button demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-button.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .blue {
+        color: #0d47a1;
+      }
+
+      .big {
+        padding: 20px;
+      }
+
+      .yellowbg {
+        background: #fff59d;
+      }
+
+      wired-button {
+        margin: 0 5px;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-button demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-button text="Button One"></wired-button>
+        <wired-button class="blue big" text="Button Two"></wired-button>
+        <wired-button class="yellowbg" text="Button Three"></wired-button>
+        <wired-button disabled text="Disabled"></wired-button>
+
+        <style is="custom-style">
+          .blue {
+            color: #0d47a1;
+          }
+
+          .big {
+            padding: 20px;
+          }
+
+          .yellowbg {
+            background: #fff59d;
+          }
+        </style>
+      </template>
+    </demo-snippet>
+
+    <h3>Button elevation</h3>
+    <p>
+      Default elevation: 1<br>Max elevation: 5
+    </p>
+    <demo-snippet>
+      <template>
+        <wired-button text="Elevation 1"></wired-button>
+        <wired-button elevation="2" text="Elevation 2"></wired-button>
+        <wired-button elevation="3" text="Elevation 3"></wired-button>
+        <wired-button elevation="4" text="Elevation 4"></wired-button>
+        <wired-button elevation="5" text="Elevation 5"></wired-button>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

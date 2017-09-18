@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-radio-group demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-radio-group.html">
+  <link rel="import" href="../../wired-radio/wired-radio.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-radio-group demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-radio-group>
+          <wired-radio name="one" text="One"></wired-radio>
+          <wired-radio name="two" text="Two"></wired-radio>
+          <wired-radio name="three" text="Three"></wired-radio>
+        </wired-radio-group>
+      </template>
+    </demo-snippet>
+    <h3>wired-radio-group demo with event</h3>
+    <demo-snippet>
+      <template>
+        <wired-radio-group id="group">
+          <wired-radio name="red" text="Red"></wired-radio>
+          <wired-radio name="green" text="Green"></wired-radio>
+          <wired-radio name="blue" text="Blue"></wired-radio>
+        </wired-radio-group>
+        <div id="colorBox" style="height: 40px; width: 40px; border: 1px solid;"></div>
+        <script>
+          group.addEventListener("selected", function () {
+            colorBox.style.background = group.selected;
+          });
+        </script>
+      </template>
+      <script>
+        group.addEventListener("selected", function () {
+          colorBox.style.background = group.selected;
+        });
+      </script>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

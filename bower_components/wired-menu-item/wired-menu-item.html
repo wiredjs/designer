@@ -1,0 +1,155 @@
+<link rel="import" href="../wired-card/wired-card.html">
+
+<dom-module id="wired-menu-item">
+  <template>
+    <style>
+       :host {
+        display: inline-block;
+        font-family: inherit;
+        position: relative;
+        cursor: pointer;
+        padding: 8px;
+        outline: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+       :host(.disabled) {
+        opacity: 0.5 !important;
+        cursor: default;
+        pointer-events: none;
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      #card {
+        position: absolute;
+        background: var(--wired-combo-popup-bg, white);
+        z-index: 1;
+        box-shadow: 1px 5px 15px -6px rgba(0, 0, 0, 0.8);
+        margin-top: 8px;
+        margin-left: -3px;
+      }
+
+       ::slotted(wired-menu-item) {
+        white-space: nowrap;
+        display: block;
+      }
+    </style>
+    <div>[[text]]</div>
+    <wired-card id="card" style="display: none;">
+      <slot id="slot"></slot>
+    </wired-card>
+  </template>
+
+  <script>
+    class WiredMenuItem extends Polymer.Element {
+      static get is() { return 'wired-menu-item'; }
+
+      static get properties() {
+        return {
+          text: String,
+          disabled: {
+            type: Boolean,
+            value: false,
+            observer: '_onDisableChange'
+          }
+        };
+      }
+
+      constructor() {
+        super();
+        this._cardShowing = false;
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._itemClickHandler = (event) => {
+          this._onClick(event)
+        };
+        this.addEventListener("click", this._itemClickHandler);
+        this._closeListener = (event) => {
+          if (this._cardShowing) {
+            this._setCardShowing(false);
+            const selectedEvent = new CustomEvent('close', { bubbles: true, composed: true, detail: { item: this } });
+            this.dispatchEvent(selectedEvent);
+          }
+        }
+        window.addEventListener("wired-close-menu", this._closeListener);
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        if (this._itemClickHandler) {
+          this.removeEventListener("click", this._itemClickHandler);
+          this._itemClickHandler = null;
+        }
+        if (this._closeListener) {
+          window.removeEventListener("wired-close-menu", this._closeListener);
+          this._closeListener = null;
+        }
+      }
+
+      _onDisableChange() {
+        if (this.disabled) {
+          this._setCardShowing(false);
+          this.classList.add("disabled");
+        } else {
+          this.classList.remove("disabled");
+        }
+      }
+
+      _hasSlotItems() {
+        if (this.parentNode.tagName === "WIRED-MENU-ITEM") {
+          return false
+        }
+        let nodes = this.$.slot.assignedNodes() || [];
+        for (var i = 0; i < nodes.length; i++) {
+          if (nodes[i].nodeType == Node.ELEMENT_NODE) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      _onClick(event) {
+        event.stopPropagation();
+        if (this._hasSlotItems()) {
+          var open = this._cardShowing;
+          if (open) {
+            this._setCardShowing(false);
+            const selectedEvent = new CustomEvent('close', { bubbles: true, composed: true, detail: { item: this } });
+            this.dispatchEvent(selectedEvent);
+          } else {
+            this._fireCloseMenus();
+            this._setCardShowing(true);
+            const selectedEvent = new CustomEvent('open', { bubbles: true, composed: true, detail: { item: this } });
+            this.dispatchEvent(selectedEvent);
+          }
+        } else {
+          this._fireCloseMenus();
+          const selectedEvent = new CustomEvent('select', { bubbles: true, composed: true, detail: { item: this } });
+          this.dispatchEvent(selectedEvent);
+        }
+      }
+
+      _fireCloseMenus() {
+        const event = new CustomEvent('wired-close-menu', { bubbles: true, composed: true, detail: { item: this } });
+        window.dispatchEvent(event);
+      }
+
+      _setCardShowing(showing) {
+        this._cardShowing = showing;
+        this.$.card.style.display = showing ? "" : "none";
+        if (showing) {
+          setTimeout(() => {
+            this.$.card.relayout();
+          }, 10);
+        }
+      }
+    }
+
+    window.customElements.define(WiredMenuItem.is, WiredMenuItem);
+  </script>
+</dom-module>

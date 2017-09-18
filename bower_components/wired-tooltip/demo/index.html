@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-tooltip demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-tooltip.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .inline {
+        display: inline-block;
+      }
+
+      .container {
+        padding: 50px 0;
+      }
+
+      button {
+        margin: 0 25px;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-tooltip demo</h3>
+    <demo-snippet>
+      <template>
+        <div class="container">
+          <div class="inline">
+            <button>Click me!</button>
+            <wired-tooltip text="Below"></wired-tooltip>
+          </div>
+          <button id="btn">Click me!</button>
+          <wired-tooltip position="top" for="btn" text="Above"></wired-tooltip>
+          <button id="lb">Click me!</button>
+          <wired-tooltip position="left" for="lb" text="Left"></wired-tooltip>
+          <button id="rb">Click me!</button>
+          <wired-tooltip position="right" for="rb" text="Right"></wired-tooltip>
+        </div>
+      </template>
+    </demo-snippet>
+
+    <h3>Styling</h3>
+    <demo-snippet>
+      <template>
+        <div class="container">
+          <div class="inline">
+            <button>Click me!</button>
+            <wired-tooltip class="colored" text="Fancy tooltip"></wired-tooltip>
+          </div>
+        </div>
+        <style is="custom-style">
+          .colored {
+            --wired-tooltip-border-color: red;
+            --wired-tooltip-background: rgba(200, 200, 0, 0.2);
+            color: blue;
+          }
+        </style>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

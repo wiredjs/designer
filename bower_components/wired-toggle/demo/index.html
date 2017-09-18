@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-toggle demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-toggle.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-toggle demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-toggle></wired-toggle>
+        <wired-toggle class="customToggle" checked></wired-toggle>
+        <wired-toggle disabled></wired-toggle>
+        <style>
+          .customToggle {
+            --wired-toggle-off-color: black;
+            --wired-toggle-on-color: red;
+          }
+        </style>
+      </template>
+    </demo-snippet>
+    <h3>wired-toggle with change event</h3>
+    <demo-snippet>
+      <template>
+        <wired-toggle id="toggle"></wired-toggle>
+        <div id="toggleLabel">Off</div>
+        <script>
+          toggle.addEventListener("change", function () {
+            toggleLabel.textContent = toggle.checked ? "On" : "Off";
+          });
+        </script>
+      </template>
+      <script>
+        toggle.addEventListener("change", function () {
+          toggleLabel.textContent = toggle.checked ? "On" : "Off";
+        });
+      </script>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

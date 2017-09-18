@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-slider demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-slider.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      wired-slider {
+        display: block;
+        margin: 5px 0;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-slider demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-slider></wired-slider>
+        <wired-slider value="40"></wired-slider>
+        <wired-slider value="60" disabled></wired-slider>
+      </template>
+    </demo-snippet>
+
+    <h3>Styling</h3>
+    <demo-snippet>
+      <template>
+        <wired-slider value="10"></wired-slider>
+        <wired-slider value="10" min="5" max="15"></wired-slider>
+        <wired-slider class="custom" value="25"></wired-slider>
+        <style is="custom-style">
+          .custom {
+            width: 400px;
+            --wired-slider-knob-color: green;
+            --wired-slider-knob-zero-color: red;
+            --wired-slider-bar-color: blue;
+          }
+        </style>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

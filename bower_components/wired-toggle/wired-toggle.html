@@ -1,0 +1,140 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+
+<dom-module id="wired-toggle">
+  <template>
+    <style>
+       :host {
+        display: inline-block;
+        cursor: pointer;
+        position: relative;
+      }
+
+       :host(.disabled) {
+        opacity: 0.4 !important;
+        cursor: default;
+        pointer-events: none;
+      }
+
+       :host(.disabled) svg {
+        background: rgba(0, 0, 0, 0.07);
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke: currentColor;
+        stroke-width: 0.7;
+        fill: transparent;
+      }
+
+      .unchecked {
+        fill: var(--wired-toggle-off-color, gray);
+      }
+
+      .checked {
+        fill: var(--wired-toggle-on-color, rgb(63, 81, 181));
+      }
+    </style>
+    <div on-click="_toggleCheck">
+      <svg id="svg"></svg>
+    </div>
+  </template>
+
+  <script>
+    class WiredToggle extends Polymer.Element {
+      static get is() { return "wired-toggle"; }
+      static get properties() {
+        return {
+          checked: {
+            type: Boolean,
+            value: false,
+            notify: true,
+            observer: '_onChecked'
+          },
+          height: {
+            type: Number,
+            observer: '_relayout'
+          },
+          disabled: {
+            type: Boolean,
+            value: false,
+            observer: '_onDisableChange'
+          }
+        }
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._connected = true;
+        this.style.opacity = 0;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          this._relayout();
+          this.style.opacity = 1;
+        });
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._connected = false;
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      _relayout() {
+        if (!this._connected) {
+          return;
+        }
+        this._clearNode(this.$.svg);
+        const s = { width: (this.height || 32) * 2.5, height: this.height || 32 };
+        this.$.svg.setAttribute("width", s.width);
+        this.$.svg.setAttribute("height", s.height);
+        _WIRES_.rectangle(this.$.svg, 0, 0, s.width, s.height);
+        this.knob = _WIRES_.ellipse(this.$.svg, s.height / 2, s.height / 2, s.height, s.height);
+        this.knobOffset = s.width - s.height;
+        this.knob.style.transition = "all 0.3s ease";
+        this._updateKnob();
+      }
+
+      _toggleCheck() {
+        this.set("checked", !(this.checked || false));
+        const event = new CustomEvent('change', { bubbles: true, composed: true, checked: this.checked, detail: { checked: this.checked } });
+        this.dispatchEvent(event);
+      }
+
+      _updateKnob() {
+        this.knob.style.transform = this.checked ? ("translateX(" + this.knobOffset + "px)") : "";
+        const cl = this.knob.classList;
+        if (this.checked) {
+          cl.remove("unchecked");
+          cl.add("checked");
+        } else {
+          cl.remove("checked");
+          cl.add("unchecked");
+        }
+      }
+
+      _onChecked() {
+        if (!this.knob) {
+          this._relayout()
+        } else {
+          this._updateKnob();
+        }
+      }
+
+      _onDisableChange() {
+        if (this.disabled) {
+          this.classList.add("disabled");
+        } else {
+          this.classList.remove("disabled");
+        }
+      }
+    }
+    window.customElements.define(WiredToggle.is, WiredToggle);
+  </script>
+</dom-module>

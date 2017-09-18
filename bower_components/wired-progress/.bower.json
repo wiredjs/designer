@@ -1,0 +1,46 @@
+{
+  "name": "wired-progress",
+  "description": "A progress indicator control with a hand-drawn wireframe look.",
+  "main": "wired-progress.html",
+  "license": "MIT",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "authors": [
+    "Preet Shihn (twtr: @preetster)"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "wired",
+    "progress",
+    "progress bar",
+    "hand-drawn",
+    "handdrawn",
+    "wireframe"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "wired-lib": "^0.1.1"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  },
+  "homepage": "https://github.com/wiredjs/wired-progress",
+  "version": "0.1.0",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.0",
+    "commit": "daf61c9346e19e2c57fa1a858dff1414fd7cdeef"
+  },
+  "_source": "https://github.com/wiredjs/wired-progress.git",
+  "_target": "^0.1.0",
+  "_originalSource": "wiredjs/wired-progress"
+}

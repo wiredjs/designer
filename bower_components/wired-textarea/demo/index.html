@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-textarea demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-textarea.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      wired-textarea {
+        margin: 5px 0;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-textarea (auto grow) demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-textarea placeholder="placeholder"></wired-textarea>
+        <wired-textarea placeholder="Enter text" rows="3"></wired-textarea>
+        <wired-textarea disabled placeholder="disabled" rows="2"></wired-textarea>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

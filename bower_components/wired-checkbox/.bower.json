@@ -1,0 +1,47 @@
+{
+  "name": "wired-checkbox",
+  "description": "Checkbox webcomponent with hand-drawn sketchy look.",
+  "main": "wired-checkbox.html",
+  "license": "MIT",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "authors": [
+    "Preet Shihn (twtr: @preetster)"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "wired",
+    "checkbox",
+    "check box",
+    "check-box",
+    "hand-drawn",
+    "handdrawn",
+    "wireframe"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "wired-lib": "^0.1.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  },
+  "homepage": "https://github.com/wiredjs/wired-checkbox",
+  "version": "0.2.1",
+  "_release": "0.2.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.1",
+    "commit": "e77698efc180b69441a79df4b47bb919d187142c"
+  },
+  "_source": "https://github.com/wiredjs/wired-checkbox.git",
+  "_target": "^0.2.0",
+  "_originalSource": "wiredjs/wired-checkbox"
+}

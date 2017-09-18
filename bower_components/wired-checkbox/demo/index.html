@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-checkbox demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-checkbox.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      wired-checkbox {
+        margin: 5px 0;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-checkbox demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-checkbox text="Cookies"></wired-checkbox>
+        <wired-checkbox text="Swiss cheese" checked></wired-checkbox>
+        <wired-checkbox disabled text="Disabled"></wired-checkbox>
+        </style>
+      </template>
+    </demo-snippet>
+
+    <h3>Styling</h3>
+    <demo-snippet>
+      <template>
+        <wired-checkbox class="blue" text="Blue checkbox"></wired-checkbox>
+        <wired-checkbox class="redgreen" text="Red + Green"></wired-checkbox>
+        <style>
+          .blue {
+            color: #0d47a1;
+          }
+
+          .redgreen {
+            color: green;
+            --wired-checkbox-icon-color: red;
+          }
+        </style>
+      </template>
+    </demo-snippet>
+
+    <h3>Handling events</h3>
+    <demo-snippet>
+      <template>
+        <wired-checkbox id="chkbx" text="Checkbox"></wired-checkbox>
+        <div id="chkLabel"></div>
+        <script>
+          chkbx.addEventListener("change", function () {
+            chkLabel.textContent = chkbx.checked;
+          });
+        </script>
+      </template>
+      <script>
+        chkbx.addEventListener("change", function () {
+          chkLabel.textContent = chkbx.checked;
+        });
+      </script>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

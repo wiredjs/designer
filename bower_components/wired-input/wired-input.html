@@ -1,0 +1,173 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+
+<dom-module id="wired-input">
+  <template>
+    <style>
+       :host {
+        display: inline-block;
+        position: relative;
+        padding: 5px;
+        font-family: sans-serif;
+        width: 150px;
+      }
+
+       :host(.disabled) {
+        opacity: 0.6 !important;
+        cursor: default;
+        pointer-events: none;
+      }
+
+       :host(.disabled) svg {
+        background: rgba(0, 0, 0, 0.07);
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke: currentColor;
+        stroke-width: 0.7;
+        fill: transparent;
+      }
+
+      input {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        outline: none;
+        border: none;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
+      }
+    </style>
+    <input id="txt" type$="[[type]]" placeholder$="[[placeholder]]" disabled$="[[disabled]]" required$="[[required]]" autocomplete$="[[autocomplete]]"
+      autofocus$="[[autofocus]]" minlength$="[[minlength]]" maxlength$="[[maxlength]]" min$="[[min]]" max$="[[max]]" step$="[[step]]"
+      readonly$="[[readonly]]" size$="[[size]]" autocapitalize$="[[autocapitalize]]" autocorrect$="[[autocorrect]]" on-change="_onChange">
+    <div class="overlay">
+      <svg id="svg"></svg>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `wired-input`
+     * A single-line text field with hand-drawn, wireframe like, look. 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class WiredInput extends Polymer.Element {
+      static get is() { return 'wired-input'; }
+      static get properties() {
+        return {
+          placeholder: String,
+          disabled: {
+            type: Boolean,
+            value: false,
+            observer: '_onDisableChange'
+          },
+          type: {
+            type: String
+          },
+          required: {
+            type: Boolean,
+            value: false
+          },
+          autocomplete: {
+            type: String,
+            value: 'off'
+          },
+          autofocus: {
+            type: Boolean
+          },
+          minlength: {
+            type: Number
+          }, maxlength: {
+            type: Number
+          }, min: {
+            type: String
+          }, max: {
+            type: String
+          }, step: {
+            type: String
+          }, readonly: {
+            type: Boolean,
+            value: false
+          }, size: {
+            type: Number
+          }, autocapitalize: {
+            type: String,
+            value: 'none'
+          }, autocorrect: {
+            type: String,
+            value: 'off'
+          },
+          value: {
+            notify: true,
+            type: String,
+            observer: '_onValue'
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.style.opacity = 0;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          setTimeout(() => {
+            this._relayout();
+            this.style.opacity = 1;
+          }, 100);
+        });
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      _relayout() {
+        this._clearNode(this.$.svg);
+        var s = this.getBoundingClientRect();
+        this.$.svg.setAttribute("width", s.width);
+        this.$.svg.setAttribute("height", s.height);
+        _WIRES_.rectangle(this.$.svg, 0, 0, s.width, s.height);
+      }
+
+      _onValue() {
+        this.$.txt.value = this.value || "";
+      }
+
+      _onDisableChange() {
+        if (this.disabled) {
+          this.classList.add("disabled");
+        } else {
+          this.classList.remove("disabled");
+        }
+      }
+
+      _onChange(event) {
+        this.set("value", this.$.txt.value);
+        event.stopPropagation();
+        const newEvent = new CustomEvent(event.type, { bubbles: true, composed: true, cancelable: event.cancelable, detail: { sourceEvent: event } });
+        this.dispatchEvent(newEvent);
+      }
+    }
+
+    window.customElements.define(WiredInput.is, WiredInput);
+  </script>
+</dom-module>

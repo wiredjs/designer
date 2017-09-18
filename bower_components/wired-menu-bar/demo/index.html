@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-menu-item demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../wired-menu-item/wired-menu-item.html">
+  <link rel="import" href="../wired-menu-bar.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      wired-menu-bar {
+        margin-bottom: 110px;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>wired-menu-item demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-menu-bar>
+          <wired-menu-item text="File">
+            <wired-menu-item text="New"></wired-menu-item>
+            <wired-menu-item text="Save"></wired-menu-item>
+            <wired-menu-item text="Quit"></wired-menu-item>
+          </wired-menu-item>
+          <wired-menu-item text="Edit">
+            <wired-menu-item text="Cut"></wired-menu-item>
+            <wired-menu-item text="Copy"></wired-menu-item>
+            <wired-menu-item text="Paste"></wired-menu-item>
+          </wired-menu-item>
+          <wired-menu-item text="Window"></wired-menu-item>
+          <wired-menu-item text="Help"></wired-menu-item>
+          <wired-menu-item disabled text="Disabled"></wired-menu-item>
+        </wired-menu-bar>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

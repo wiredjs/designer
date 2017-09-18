@@ -1,0 +1,138 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<dom-module id="wired-icon-button">
+  <template>
+    <style>
+       :host {
+        display: inline-block;
+        position: relative;
+        padding: 8px;
+        outline: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        z-index: 0;
+        line-height: 1;
+        width: 40px;
+        height: 40px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+        box-sizing: border-box !important;
+      }
+
+       :host(.disabled) {
+        opacity: 0.45 !important;
+        cursor: default;
+        background: rgba(0, 0, 0, 0.07);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+       :host(:active) path {
+        transform: scale(0.96) translate(2%, 2%);
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke: currentColor;
+        stroke-width: 0.7;
+        fill: var(--wired-icon-bg-color, transparent);
+        transition: transform 0.05s ease;
+      }
+
+      iron-icon {
+        --iron-icon-width: 100%;
+        --iron-icon-height: 100%;
+        position: relative;
+      }
+    </style>
+    <div class="overlay">
+      <svg id="svg"></svg>
+    </div>
+    <iron-icon id="icon" src="[[src]]" icon="[[icon]]"></iron-icon>
+
+  </template>
+
+  <script>
+    class WiredIconButton extends Polymer.Element {
+      static get is() { return 'wired-icon-button'; }
+
+      static get properties() {
+        return {
+          src: {
+            type: String,
+            observer: '_relayout'
+          },
+          icon: {
+            type: String,
+            observer: '_relayout'
+          },
+          disabled: {
+            type: Boolean,
+            value: false,
+            observer: '_onDisableChange'
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._connected = true;
+        this.style.opacity = 0;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          setTimeout(() => {
+            this.style.opacity = 1;
+            this._relayout();
+          }, 10);
+        });
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._connected = false;
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      _onDisableChange() {
+        if (this.disabled) {
+          this.classList.add("disabled");
+        } else {
+          this.classList.remove("disabled");
+        }
+      }
+
+      _relayout() {
+        if (!this._connected) {
+          return;
+        }
+        this._clearNode(this.$.svg);
+        var s = this.getBoundingClientRect();
+        this.$.svg.setAttribute("width", s.width);
+        this.$.svg.setAttribute("height", s.height);
+        _WIRES_.ellipse(this.$.svg, s.width / 2, s.height / 2, s.width, s.height);
+      }
+    }
+
+    window.customElements.define(WiredIconButton.is, WiredIconButton);
+  </script>
+</dom-module>

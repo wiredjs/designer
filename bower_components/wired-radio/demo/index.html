@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-radio demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-radio.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      wired-radio {
+        margin: 5px 0;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-radio demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-radio text="Radio One"></wired-radio>
+        <wired-radio text="Radio Two" checked></wired-radio>
+        <wired-radio text="Disabled" disabled></wired-radio>
+        <wired-radio text="Radio Three" class="blue"></wired-radio>
+        <wired-radio text="Purple Green" class="prplgrn"></wired-radio>
+        <style>
+          .blue {
+            color: #0d47a1;
+          }
+
+          .prplgrn {
+            color: green;
+            --wired-radio-icon-color: purple;
+          }
+        </style>
+      </template>
+    </demo-snippet>
+    <p>
+      View wired-radio-group to see the case where only one radio is selected.
+    </p>
+  </div>
+</body>
+
+</html>

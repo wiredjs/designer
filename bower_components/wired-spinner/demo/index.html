@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-spinner demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-spinner.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .purple {
+        color: purple;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-spinner demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-spinner></wired-spinner>
+        <wired-spinner active></wired-spinner>
+        <wired-spinner active class="purple"></wired-spinner>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

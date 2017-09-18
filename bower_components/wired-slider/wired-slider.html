@@ -1,0 +1,252 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
+
+<dom-module id="wired-slider">
+  <template>
+    <style is="custom-style">
+       :host {
+        display: inline-block;
+        position: relative;
+        width: 300px;
+        height: 40px;
+        box-sizing: border-box;
+      }
+
+       :host(.disabled) {
+        opacity: 0.45 !important;
+        cursor: default;
+        pointer-events: none;
+        background: rgba(0, 0, 0, 0.07);
+        border-radius: 5px;
+      }
+
+       :host(.disabled) .knob {
+        pointer-events: none !important;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke-width: 0.7;
+        fill: transparent;
+      }
+
+      .knob {
+        pointer-events: auto;
+        fill: var(--wired-slider-knob-zero-color, gray);
+        stroke: var(--wired-slider-knob-zero-color, gray);
+        transition: transform 0.15s ease;
+        cursor: pointer;
+      }
+
+      .hasValue {
+        fill: var(--wired-slider-knob-color, rgb(51, 103, 214));
+        stroke: var(--wired-slider-knob-color, rgb(51, 103, 214));
+      }
+
+      .bar {
+        stroke: var(--wired-slider-bar-color, rgb(0, 0, 0));
+      }
+
+      .expanded {
+        transform: scale(1.3) translate(-15%, -15%);
+      }
+    </style>
+    <div class="overlay">
+      <svg id="svg"></svg>
+    </div>
+  </template>
+
+  <script>
+    class WiredSlider extends Polymer.Element {
+      static get is() { return 'wired-slider'; }
+
+      static get properties() {
+        return {
+          value: {
+            type: Number,
+            value: 0,
+            notify: true,
+            observer: '_onValueChange'
+          },
+          min: {
+            type: Number,
+            value: 0,
+            observer: '_refresh'
+          },
+          max: {
+            type: Number,
+            value: 100,
+            observer: '_refresh'
+          },
+          knobRadius: {
+            type: Number,
+            value: 10,
+            observer: '_refresh'
+          },
+          disabled: {
+            type: Boolean,
+            value: false,
+            observer: '_onDisableChange'
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._connected = true
+        this.style.opacity = 0;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          this._refresh();
+          this.style.opacity = 1;
+        });
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._connected = false;
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      _onDisableChange() {
+        if (this.disabled) {
+          this.classList.add("disabled");
+        } else {
+          this.classList.remove("disabled");
+        }
+      }
+
+      _refresh() {
+        if (!this._connected) {
+          return;
+        }
+        this._clearNode(this.$.svg);
+        var s = this.getBoundingClientRect();
+        this.$.svg.setAttribute("width", s.width);
+        this.$.svg.setAttribute("height", s.height);
+        let radius = this.knobRadius || 10;
+        this._barWidth = s.width - (2 * radius);
+        this._bar = _WIRES_.line(this.$.svg, radius, s.height / 2, s.width - radius, s.height / 2);
+        this._bar.classList.add("bar");
+
+        this._knobGroup = _WIRES_._svgNode("g");
+        this.$.svg.appendChild(this._knobGroup);
+
+        this._knob = _WIRES_.ellipse(this._knobGroup, radius, s.height / 2, radius * 2, radius * 2);
+        this._knob.classList.add("knob");
+        this._onValueChange();
+
+        // add events
+        Polymer.Gestures.addListener(this._knob, 'up', (event) => {
+          if (!this.disabled)
+            this._resetKnob(event);
+        });
+        Polymer.Gestures.addListener(this._knob, 'down', (event) => {
+          if (!this.disabled)
+            this._knobdown(event);
+        });
+        Polymer.Gestures.addListener(this._knob, 'track', (event) => {
+          if (!this.disabled)
+            this._onTrack(event);
+        });
+      }
+
+      _onValueChange() {
+        if (!this._knob) {
+          return;
+        }
+        let pct = 0;
+        if (this.max > this.min) {
+          pct = Math.min(1, Math.max((this.value - this.min) / (this.max - this.min), 0));
+        }
+        this._pct = pct;
+        if (pct) {
+          this._knob.classList.add("hasValue");
+        } else {
+          this._knob.classList.remove("hasValue")
+        }
+        let knobOffset = pct * this._barWidth;
+        this._knobGroup.style.transform = "translateX(" + Math.round(knobOffset) + "px)";
+      }
+
+      _knobdown(event) {
+        this._knobExpand(true);
+        event.preventDefault();
+        this.focus();
+      }
+
+      _resetKnob(event) {
+        this._knobExpand(false);
+      }
+
+      _knobExpand(value) {
+        if (this._knob) {
+          if (value) {
+            this._knob.classList.add("expanded");
+          } else {
+            this._knob.classList.remove("expanded");
+          }
+        }
+      }
+
+      _onTrack(event) {
+        event.stopPropagation();
+        switch (event.detail.state) {
+          case 'start':
+            this._trackStart(event);
+            break;
+          case 'track':
+            this._trackX(event);
+            break;
+          case 'end':
+            this._trackEnd();
+            break;
+        }
+      }
+
+      _trackStart(event) {
+        this._intermediateValue = this.value;
+        this._startX = this._pct * this._barWidth;
+        this._dragging = true;
+      }
+
+      _trackX(event) {
+        if (!this._dragging) {
+          this._trackStart(event);
+        }
+        var dx = event.detail.dx || 0;
+        var newX = Math.max(Math.min(this._startX + dx, this._barWidth), 0);
+        this._knobGroup.style.transform = "translateX(" + Math.round(newX) + "px)";
+        var newPct = newX / this._barWidth;
+        this._intermediateValue = this.min + newPct * (this.max - this.min);
+      }
+
+      _trackEnd() {
+        this._dragging = false;
+        this._resetKnob();
+        this.set("value", this._intermediateValue);
+        const event = new CustomEvent('change', { bubbles: true, composed: true, detail: { value: this._intermediateValue } });
+        this.dispatchEvent(event);
+      }
+
+    }
+
+    window.customElements.define(WiredSlider.is, WiredSlider);
+  </script>
+</dom-module>

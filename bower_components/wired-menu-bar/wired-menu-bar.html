@@ -1,0 +1,86 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+
+<dom-module id="wired-menu-bar">
+  <template>
+    <style>
+       :host {
+        display: block;
+        font-family: inherit;
+        position: relative;
+        padding: 5px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke: currentColor;
+        stroke-width: 0.7;
+        fill: transparent;
+      }
+
+       ::slotted(wired-menu-item) {
+        white-space: nowrap;
+      }
+    </style>
+    <slot id="slot"></slot>
+    <div class="overlay">
+      <svg id="svg"></svg>
+    </div>
+  </template>
+
+  <script>
+    class WiredMenuBar extends Polymer.Element {
+      static get is() { return 'wired-menu-bar'; }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.style.opacity = 0;
+        this._connected = true;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          setTimeout(() => {
+            this._relayout();
+            this.style.opacity = 1;
+          }, 100);
+        });
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._connected = false;
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      _relayout() {
+        if (!this._connected) {
+          return;
+        }
+        this._clearNode(this.$.svg);
+        var s = this.getBoundingClientRect();
+        this.$.svg.setAttribute("width", s.width);
+        this.$.svg.setAttribute("height", s.height);
+        _WIRES_.rectangle(this.$.svg, 0, 0, s.width, s.height);
+      }
+    }
+
+    window.customElements.define(WiredMenuBar.is, WiredMenuBar);
+  </script>
+</dom-module>

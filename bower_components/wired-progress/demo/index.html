@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>wired-progress demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../wired-progress.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic wired-progress demo</h3>
+    <demo-snippet>
+      <template>
+        <wired-progress value="25"></wired-progress>
+        <wired-progress value="10" min="5" max="15"></wired-progress>
+      </template>
+    </demo-snippet>
+
+    <h3>Customizing wired-progress</h3>
+    <demo-snippet>
+      <template>
+        <wired-progress value="65" percentage></wired-progress>
+        <wired-progress class="coloredProgress" value="30"></wired-progress>
+        <style>
+          .coloredProgress {
+            --wired-progress-color: rgba(220, 0, 50, 0.1);
+            --wired-progress-label-color: green;
+            --wired-progress-font-size: 24px;
+            width: 300px;
+          }
+        </style>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

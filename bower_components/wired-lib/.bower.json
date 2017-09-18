@@ -1,0 +1,39 @@
+{
+  "name": "wired-lib",
+  "description": "This is the core rendering library used by all wired ui components",
+  "main": "wired-lib.html",
+  "license": "MIT",
+  "authors": [
+    "Preet Shihn (twtr: @preetster)"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "wired",
+    "svg",
+    "hand-drawn",
+    "handdrawn",
+    "wireframe"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  },
+  "homepage": "https://github.com/wiredjs/wired-lib",
+  "version": "0.1.1",
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.1",
+    "commit": "35ab3aa05d2dad25ab7db796c9ff4e1e0b3b4080"
+  },
+  "_source": "https://github.com/wiredjs/wired-lib.git",
+  "_target": "^0.1.1",
+  "_originalSource": "wiredjs/wired-lib"
+}

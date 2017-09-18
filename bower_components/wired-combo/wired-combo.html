@@ -1,0 +1,225 @@
+<link rel="import" href="../wired-card/wired-card.html">
+<link rel="import" href="../wired-item/wired-item.html">
+
+<dom-module id="wired-combo">
+  <template>
+    <style>
+       :host {
+        display: inline-block;
+        font-family: inherit;
+        position: relative;
+      }
+
+       :host(.disabled) {
+        opacity: 0.5 !important;
+        cursor: default;
+        pointer-events: none;
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      #container {
+        white-space: nowrap;
+        position: relative;
+      }
+
+      .inline {
+        display: inline-block;
+        vertical-align: top
+      }
+
+      #textPanel {
+        min-width: 90px;
+        min-height: 18px;
+        padding: 8px;
+      }
+
+      #dropPanel {
+        width: 34px;
+        cursor: pointer;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke: currentColor;
+        stroke-width: 0.7;
+        fill: transparent;
+      }
+
+      #card {
+        position: absolute;
+        background: var(--wired-combo-popup-bg, white);
+        z-index: 1;
+        box-shadow: 1px 5px 15px -6px rgba(0, 0, 0, 0.8);
+      }
+
+       ::slotted(wired-item) {
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+       ::slotted(wired-item:hover) {
+        background: var(--wired-combo-item-hover-bg, rgba(0, 0, 0, 0.1));
+      }
+    </style>
+    <div id="container" on-click="_onCombo">
+      <div id="textPanel" class="inline">
+        <span>[[value.text]]</span>
+      </div>
+      <div id="dropPanel" class="inline"></div>
+      <div class="overlay">
+        <svg id="svg"></svg>
+      </div>
+    </div>
+    <wired-card id="card" on-item-click="_onItemClick" style="display: none;">
+      <slot id="slot"></slot>
+    </wired-card>
+  </template>
+
+  <script>
+    class WiredCombo extends Polymer.Element {
+      static get is() { return 'wired-combo'; }
+
+      static get properties() {
+        return {
+          value: {
+            type: Object,
+            observer: '_relayout'
+          },
+          selected: {
+            type: String,
+            observer: '_refreshSelection',
+            notify: true
+          },
+          disabled: {
+            type: Boolean,
+            value: false,
+            observer: '_onDisableChange'
+          }
+        };
+      }
+
+      constructor() {
+        super();
+        this._cardShowing = false;
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._connected = true;
+        this.style.opacity = 0;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          setTimeout(() => {
+            this._relayout();
+            this.style.opacity = 1;
+          }, 100);
+        });
+        this._refreshSelection();
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._connected = false;
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      _refreshSelection() {
+        const nodes = this.$.slot.assignedNodes();
+        if (nodes) {
+          let selectedItem = null;
+          for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i].tagName === "WIRED-ITEM") {
+              const value = nodes[i].value || "";
+              if (this.selected && (value === this.selected)) {
+                selectedItem = nodes[i];
+                break;
+              }
+            }
+          }
+          if (selectedItem) {
+            this.set("value", {
+              value: selectedItem.value,
+              text: selectedItem.text
+            });
+          } else {
+            this.set("value", null);
+          }
+        }
+      }
+
+      _relayout() {
+        if (!this._connected) {
+          return;
+        }
+        this._clearNode(this.$.svg);
+        const s = this.$.container.getBoundingClientRect();
+        this.$.svg.setAttribute("width", s.width);
+        this.$.svg.setAttribute("height", s.height);
+        const textBounds = this.$.textPanel.getBoundingClientRect();
+        this.$.dropPanel.style.minHeight = textBounds.height + "px";
+        _WIRES_.rectangle(this.$.svg, 0, 0, textBounds.width, textBounds.height);
+        const dropx = textBounds.width - 4;
+        _WIRES_.rectangle(this.$.svg, dropx, 0, 34, textBounds.height);
+        const dropOffset = Math.max(0, Math.abs((textBounds.height - 24) / 2));
+        const poly = _WIRES_.polygon(this.$.svg, [
+          [dropx + 8, 5 + dropOffset],
+          [dropx + 26, 5 + dropOffset],
+          [dropx + 17, dropOffset + Math.min(textBounds.height, 18)]
+        ]);
+        poly.style.fill = "currentColor";
+        poly.style.pointerEvents = "auto";
+        poly.style.cursor = "pointer";
+      }
+
+      _onCombo(event) {
+        event.stopPropagation();
+        this._setCardShowing(!this._cardShowing);
+      }
+
+      _setCardShowing(showing) {
+        this._cardShowing = showing;
+        this.$.card.style.display = showing ? "" : "none";
+        if (showing) {
+          setTimeout(() => {
+            this.$.card.relayout();
+          }, 10);
+        }
+      }
+
+      _onItemClick(event) {
+        event.stopPropagation();
+        this._setCardShowing(false);
+        this.set("selected", event.detail.value);
+        const selectedEvent = new CustomEvent('selected', { bubbles: true, composed: true, checked: this.checked, detail: { selected: this.selected } });
+        this.dispatchEvent(selectedEvent);
+      }
+
+      _onDisableChange() {
+        if (this.disabled) {
+          this._setCardShowing(false);
+          this.classList.add("disabled");
+        } else {
+          this.classList.remove("disabled");
+        }
+      }
+    }
+
+    window.customElements.define(WiredCombo.is, WiredCombo);
+  </script>
+</dom-module>

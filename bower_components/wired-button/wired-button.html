@@ -1,0 +1,136 @@
+<link rel="import" href="../wired-lib/wired-lib.html">
+
+<dom-module id="wired-button">
+  <template>
+    <style>
+       :host {
+        display: inline-block;
+        font-family: inherit;
+        cursor: pointer;
+        padding: 8px 10px;
+        position: relative;
+        text-align: center;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        display: inline-flex;
+      }
+
+       :host(:active) path {
+        transform: scale(0.97) translate(1.5%, 1.5%);
+      }
+
+       :host(.disabled) {
+        opacity: 0.6 !important;
+        background: rgba(0, 0, 0, 0.07);
+        cursor: default;
+        pointer-events: none;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+      }
+
+      svg {
+        display: block;
+      }
+
+      path {
+        stroke: currentColor;
+        stroke-width: 0.7;
+        fill: transparent;
+        transition: transform 0.05s ease;
+      }
+    </style>
+    <span>[[text]]</span>
+    <div class="overlay">
+      <svg id="svg">
+      </svg>
+    </div>
+  </template>
+
+  <script>
+    class WiredButton extends Polymer.Element {
+      static get is() { return 'wired-button'; }
+      static get properties() {
+        return {
+          text: {
+            type: String,
+            observer: '_relayout'
+          },
+          elevation: {
+            type: Number,
+            value: 1,
+            observer: '_relayout'
+          },
+          disabled: {
+            type: Boolean,
+            value: false,
+            observer: '_onDisableChange'
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._connected = true;
+        this.style.opacity = 0;
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+          setTimeout(() => {
+            this._relayout();
+            this.style.opacity = 1;
+          }, 100);
+        });
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._connected = false;
+      }
+
+      _clearNode(node) {
+        while (node.hasChildNodes()) {
+          node.removeChild(node.lastChild);
+        }
+      }
+
+      _onDisableChange() {
+        if (this.disabled) {
+          this.classList.add("disabled");
+        } else {
+          this.classList.remove("disabled");
+        }
+      }
+
+      _relayout() {
+        if (!this._connected) {
+          return;
+        }
+        this._clearNode(this.$.svg);
+        var s = this.getBoundingClientRect();
+        var elev = Math.min(Math.max(1, this.elevation), 5);
+        var w = s.width + ((elev - 1) * 2);
+        var h = s.height + ((elev - 1) * 2);
+        this.$.svg.setAttribute("width", w);
+        this.$.svg.setAttribute("height", h);
+        _WIRES_.rectangle(this.$.svg, 0, 0, s.width, s.height);
+        for (var i = 1; i < elev; i++) {
+          (_WIRES_.line(this.$.svg, (i * 2), s.height + (i * 2), s.width + (i * 2), s.height + (i * 2))).style.opacity = (85 - (i * 10)) / 100;
+          (_WIRES_.line(this.$.svg, s.width + (i * 2), s.height + (i * 2), s.width + (i * 2), i * 2)).style.opacity = (85 - (i * 10)) / 100;
+          (_WIRES_.line(this.$.svg, (i * 2), s.height + (i * 2), s.width + (i * 2), s.height + (i * 2))).style.opacity = (85 - (i * 10)) / 100;
+          (_WIRES_.line(this.$.svg, s.width + (i * 2), s.height + (i * 2), s.width + (i * 2), i * 2)).style.opacity = (85 - (i * 10)) / 100;
+        }
+      }
+    }
+    window.customElements.define(WiredButton.is, WiredButton);
+  </script>
+</dom-module>

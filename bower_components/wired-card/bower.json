@@ -1,0 +1,36 @@
+{
+  "name": "wired-card",
+  "description": "wired-card is s a container for other web elements - with a hand-drawn, wireframe like, look.",
+  "main": "wired-card.html",
+  "license": "MIT",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "authors": [
+    "Preet Shihn (twtr: @preetster)"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "wired",
+    "card",
+    "hand-drawn",
+    "handdrawn",
+    "wireframe"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "wired-lib": "^0.1.1"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "wired-input": "^0.1.1",
+    "wired-radio-group": "^0.1.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}

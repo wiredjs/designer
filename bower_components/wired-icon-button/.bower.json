@@ -1,0 +1,48 @@
+{
+  "name": "wired-icon-button",
+  "description": "This is a round button with an image placed at the center. Image could also be in icon, more specifically an icon as and iron-icon.",
+  "main": "wired-icon-button.html",
+  "license": "MIT",
+  "demos": {
+    "Demo": "demo/index.html"
+  },
+  "authors": [
+    "Preet Shihn (twtr: @preetster)"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "wired",
+    "button",
+    "icon button",
+    "hand-drawn",
+    "handdrawn",
+    "wireframe"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-icon": "^2.0.1",
+    "wired-lib": "wiredjs/wired-lib#^0.1.1"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "iron-icons": "^2.0.1"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  },
+  "homepage": "https://github.com/wiredjs/wired-icon-button",
+  "version": "0.1.1",
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.1",
+    "commit": "4eb7e86ab701f9555cd2b3a26ee027c14f411d22"
+  },
+  "_source": "https://github.com/wiredjs/wired-icon-button.git",
+  "_target": "^0.1.1",
+  "_originalSource": "wiredjs/wired-icon-button"
+}
