@@ -176,7 +176,7 @@
           this.setActiveElement(event.detail.target);
         });
         this.addEventListener('finish-clone', event => {
-          this._finishNewElement(event.detail.target, event.detail.target.localName, true);
+          this._finishCloneElement(event.detail.target);
         });
         this.addEventListener('update-action-buttons', event => {
           this.$.appControls.update(event.detail.undos, event.detail.redos);
@@ -333,28 +333,10 @@
         }
       }
 
-      _finishNewElement(el, tag, isClone) {
-        el.id = this._makeUniqueId(el, tag);
-        if (isClone) {
-          // Go through the children and reset their IDs too.
-          let children = el.querySelectorAll('*');
-          for (let i = 0; i < el.length; i++) {
-            el[i].id = this._makeUniqueId(el[i], el[i].localName);
-          }
-          return;
-        }
-        // If it's a new element that isn't a clone, it was chosen from the
-        // palette, so position it somewhere slightly better.
+      _finishCloneElement(el) {
         el.style.boxSizing = 'border-box';
         el.style.position = 'absolute';
         el.style.left = el.style.top = '20px';
-        // If it's a native element, or has a slot, put some text in that slot
-        // to indicate that.
-        let slots = el.root ? el.root.querySelectorAll('slot') : [];
-        if ((this.$.paletteView.isNativeElement(tag) && tag !== 'input') ||
-          slots.length != 0) {
-          el.textContent = tag;
-        }
       }
       _makeUniqueId(node, id, suffix) {
         id = id.replace('-', '_');
