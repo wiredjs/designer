@@ -1,7 +1,10 @@
 {
-  "name": "wywiwyg",
-  "description": "What you wire is what you get",
+  "name": "wired-designer",
+  "description": "Mockups and wireframing tool built using web components, and is open source.",
   "main": "index.html",
+  "authors": [
+    "Preet Shihn <preetshihn@gmail.com>"
+  ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
@@ -9,5 +12,7 @@
     "iron-ajax": "^2.0.5",
     "wired-elements": "^0.2.3",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0"
-  }
+  },
+  "license": "BSD-3",
+  "private": true
 }
