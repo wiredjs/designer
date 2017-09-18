@@ -1,33 +1,11 @@
-# \<wywiwyg\>
+# Wired Designer
 
-What you wire is what you get
+This is a very simple wysiwyg style designe for createing mockups and wireframes.
+[Live app](https://wiredjs.github.io/designer)
 
-## Install the Polymer-CLI
+The sketchy looking components used by the designer are stand alone functional web components and can be used by anyone in their web app: [Wired elements](https://www.webcomponents.org/collection/wiredjs/wired-elements)
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
+The designer app is adapted from [Polymer's wizzywid](https://github.com/PolymerLabs/wizzywid)
 
-## Viewing Your Application
-
-```
-$ polymer serve
-```
-
-## Building Your Application
-
-```
-$ polymer build
-```
-
-This will create builds of your application in the `build/` directory, optimized to be served in production. You can then serve the built versions by giving `polymer serve` a folder to serve from:
-
-```
-$ polymer serve build/default
-```
-
-## Running Tests
-
-```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+License: [BSD-3-Clause](https://github.com/wiredjs/designer/blob/master/LICENSE)
+Author: [Preet Shihn](https://twitter.com/preetster)
