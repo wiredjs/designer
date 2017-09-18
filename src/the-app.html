@@ -138,27 +138,61 @@
         margin-left: -5px;
       }
 
-      a {
+      a,
+      a:visited,
+      a:hover {
         outline: none;
         text-decoration: none;
         cursor: pointer;
+        color: inherit !important;
+      }
+
+      #mobilePanel {
+        display: none;
+        background: var(--medium-grey);
+        color: white;
+        padding: 20px;
+      }
+
+      #mobilePanel h2 {
+        font-weight: 400;
+      }
+
+      #mobilePanel a {
+        background: var(--highlight-pink);
+        color: white !important;
+        display: inline-block;
+        padding: 5px 6px;
+        border-radius: 3px;
+      }
+
+      @media (max-width: 800px) {
+        #mainPanel {
+          display: none;
+        }
+        #appControls {
+          display: none;
+        }
+        #mobilePanel {
+          display: initial;
+        }
       }
     </style>
     <action-history id="actionHistory"></action-history>
     <div id="shell" class="vertical layout">
       <div id="toolbar" class="horizontal layout center">
         <a href="https://github.com/wiredjs/designer" target="_blank"><img class="logo" src="/images/logo100.png"></a>
-        <span class="heavy flex">wired designer<span class="lite"> // beta</span></span>
+        <span class="heavy flex">
+            <a href="https://github.com/wiredjs/designer" target="_blank">wired designer<span class="lite"> // beta</span></a>
+        </span>
         <app-controls id="appControls"></app-controls>
       </div>
-      <div class="flex horizontal layout">
-
+      <div id="mainPanel" class="flex horizontal layout">
         <div id="ldrawer" class="drawer">
           <designer-tab class="single"><button>Components</button></designer-tab>
           <canvas-controls id="canvasControls"></canvas-controls>
           <tree-view name="tree" id="treeView"></tree-view>
         </div>
-
         <div id="mainView" class="flex vertical layout">
           <div class="horizontal layout" style="box-sizing: border-box;">
             <designer-tabs attr-for-selected="name" selected="{{mainPage}}" class="flex" style="width: auto;">
@@ -175,13 +209,19 @@
             <canvas-view name="designer" id="viewContainer" style="height:100%"></canvas-view>
           </iron-pages>
         </div>
-
         <div class="drawer">
-          <!-- <canvas-controls id="canvasControls"></canvas-controls> -->
           <element-view id="elementView"></element-view>
           <palette-view id="paletteView"></palette-view>
         </div>
-
+      </div>
+      <div id="mobilePanel" class="flex">
+        <h2>Wired designer is a desktop only app. Sorry :(</h2>
+        <p>
+          It's a mockups and wireframing tool built using web components, and is open source.
+        </p>
+        <p>
+          <a href="https://github.com/wiredjs/designer">View on github</a>
+        </p>
       </div>
     </div>
   </template>
