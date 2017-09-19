@@ -70,11 +70,11 @@
       "label": "List box",
       "styles": [
         {
-          "name": "minWidth",
+          "name": "width",
           "value": "80px"
         },
         {
-          "name": "minHeight",
+          "name": "height",
           "value": "100px"
         }
       ]
@@ -99,11 +99,11 @@
       "label": "Radio group",
       "styles": [
         {
-          "name": "minWidth",
+          "name": "width",
           "value": "80px"
         },
         {
-          "name": "minHeight",
+          "name": "height",
           "value": "100px"
         }
       ]
