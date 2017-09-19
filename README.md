@@ -13,3 +13,5 @@ Built with webcomponents and Polymer.
 
 License: [BSD-3-Clause](https://github.com/wiredjs/designer/blob/master/LICENSE)<br>
 Author: [Preet Shihn](https://twitter.com/preetster)
+
+![Wired Designer](https://wiredjs.github.io/designer/images/sshot.png)
