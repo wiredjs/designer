@@ -18,7 +18,7 @@
     "url": "https://github.com/polymerelements/test-fixture/issues"
   },
   "homepage": "https://github.com/polymerelements/test-fixture#readme",
-  "dependencies": {
+  "devDependencies": {
     "web-component-tester": "^6.0.0-prerelease.5"
   }
 }

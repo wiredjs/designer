@@ -1,6 +1,6 @@
 {
   "name": "test-fixture",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0",
   "license": "http://polymer.github.io/LICENSE.txt",
   "description": "A simple element to fixture DOM for tests",
   "keywords": [
@@ -23,11 +23,11 @@
   "main": "test-fixture.html",
   "ignore": [],
   "homepage": "https://github.com/polymerelements/test-fixture",
-  "_release": "3.0.0-rc.1",
+  "_release": "3.0.0",
   "_resolution": {
     "type": "version",
-    "tag": "v3.0.0-rc.1",
-    "commit": "eb86ce25c850bb20523d47a55d07235f0fad5858"
+    "tag": "v3.0.0",
+    "commit": "05caebd9ecbb464024455923bd351d2ba640932e"
   },
   "_source": "https://github.com/polymerelements/test-fixture.git",
   "_target": "^3.0.0-rc.1",
