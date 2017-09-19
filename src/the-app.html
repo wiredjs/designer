@@ -342,6 +342,9 @@
       updateElement(event) {
         let detail = event.detail;
         let oldValue = this.updateActiveElementValues(detail.type, detail.name, detail.value, detail.isAttribute);
+        if (this.activeElement) {
+          rewire(this.activeElement);
+        }
         if (detail.skipHistory) {
           return;
         }
